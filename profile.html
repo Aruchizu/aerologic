@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile – Aerologic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=LINE+Seed+JP:wght@100;400;700;800&family=Momo+Trust+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="navbar">
+    <div class="navbar-logo">
+      <img src="assets/logo-blue.png" alt="Logo">
+      <img src="assets/logo-name-text.png" alt="Aerologic">
+    </div>
+    <div class="navbar-links">
+      <a href="index.html">Home</a>
+      <a href="lessons.html">Lessons</a>
+      <a href="myprogress.html">My Progress</a>
+      <a href="#">About</a>
+    </div>
+    <div class="navbar-right" id="navbar-right">
+      <a href="signup.html" class="signup-btn">Sign up or Log in</a>
+    </div>
+  </div>
+
+  <div class="profile-page" id="profile-page" style="display:none;">
+    <div class="profile-container">
+
+      <!-- Page header -->
+      <p class="page-kicker">ACCOUNT</p>
+      <h1 class="profile-title">My Profile</h1>
+      <p class="profile-subtitle">Your identity, achievements, and account settings.</p>
+
+      <!-- ① Hero card -->
+      <div class="profile-hero-card">
+        <div class="profile-banner"></div>
+        <div class="profile-avatar-center">
+          <div class="profile-avatar-wrap">
+            <div class="profile-avatar" id="profile-avatar">?</div>
+            <span class="profile-status-dot"></span>
+          </div>
+        </div>
+        <div class="profile-hero-body">
+          <p class="profile-name" id="profile-name">Loading...</p>
+          <span class="profile-rank-chip" id="profile-rank-chip">✈ A320 Beginner Learner</span>
+          <p class="profile-email" id="profile-email-display"></p>
+          <div class="profile-meta-grid">
+            <div class="profile-meta-item">
+              <span class="meta-label">LEARNER ID</span>
+              <span class="meta-val" id="meta-id">#0000</span>
+            </div>
+            <div class="profile-meta-item">
+              <span class="meta-label">MEMBER SINCE</span>
+              <span class="meta-val" id="meta-since">May 2025</span>
+            </div>
+            <div class="profile-meta-item">
+              <span class="meta-label">AIRCRAFT</span>
+              <span class="meta-val">A320</span>
+            </div>
+          </div>
+          <button class="profile-logout-btn" id="profile-logout-btn">➤ Logout</button>
+        </div>
+      </div>
+
+      <!-- ② Account Information -->
+      <div class="profile-section-card">
+        <p class="profile-card-label">ACCOUNT INFORMATION</p>
+        <div class="account-info-row">
+          <span class="account-info-key">Full name</span>
+          <span class="account-info-val" id="info-fullname">—</span>
+        </div>
+        <div class="account-info-row">
+          <span class="account-info-key">Email address</span>
+          <span class="account-info-val" id="info-email">—</span>
+        </div>
+        <div class="account-info-row">
+          <span class="account-info-key">Account created</span>
+          <span class="account-info-val" id="info-created">May 2025</span>
+        </div>
+        <div class="account-info-row">
+          <span class="account-info-key">Learning status</span>
+          <span class="status-pill status-pill--inprogress" id="info-status">Not Started</span>
+        </div>
+      </div>
+
+      <!-- ③ Aircraft Progress -->
+      <div class="profile-section-card">
+        <p class="profile-card-label">CURRENT AIRCRAFT PROGRESS</p>
+        <div class="aircraft-progress-row">
+          <div class="aircraft-icon-tile">
+            <img src="assets/logo-blue.png" alt="A320" style="width:22px;height:22px;filter:brightness(0) invert(1);">
+          </div>
+          <div class="aircraft-progress-info">
+            <p class="aircraft-progress-title">Airbus A320 — Normal Procedures</p>
+            <p class="aircraft-progress-sub">Current lesson: <span id="prog-current-lesson">—</span></p>
+          </div>
+        </div>
+        <div class="profile-progress-bar">
+          <div class="profile-progress-fill" id="prog-bar" style="width:0%"></div>
+        </div>
+        <p class="progress-text"><span id="prog-pct">0%</span> complete &nbsp;·&nbsp; <span id="prog-count">0 of 7</span> lessons done</p>
+      </div>
+
+      <!-- ④ Achievement Badges -->
+      <div class="profile-section-card">
+        <p class="profile-card-label">ACHIEVEMENT BADGES</p>
+        <div class="badge-grid">
+          <div class="badge-card locked" id="badge-bronze">
+            <span class="badge-icon">★</span>
+            <p class="badge-name">Bronze</p>
+            <p class="badge-desc">Complete A320 once</p>
+          </div>
+          <div class="badge-card locked" id="badge-silver">
+            <span class="badge-icon">★</span>
+            <p class="badge-name">Silver</p>
+            <p class="badge-desc">Complete A320 twice</p>
+          </div>
+          <div class="badge-card locked" id="badge-gold">
+            <span class="badge-icon">★</span>
+            <p class="badge-name">Gold</p>
+            <p class="badge-desc">Complete A320 three times</p>
+          </div>
+          <div class="badge-card locked" id="badge-platinum">
+            <span class="badge-icon">✨</span>
+            <p class="badge-name">Platinum</p>
+            <p class="badge-desc">Complete A320 four times</p>
+          </div>
+        </div>
+        <p class="badge-hint" id="badge-hint">🔒 Complete the A320 lesson path to earn your first badge.</p>
+      </div>
+
+      <!-- ⑤ Display Title & Rank -->
+      <div class="profile-section-card">
+        <p class="profile-card-label">DISPLAY TITLE &amp; RANK</p>
+        <div class="rank-row rank-row--active" id="rank-beginner">
+          <span>✈ Beginner Learner</span>
+          <span class="rank-status rank-status--active">Active</span>
+        </div>
+        <div class="rank-row rank-row--locked" id="rank-copilot">
+          <span>🛡 A320 Co-Pilot</span>
+          <span class="rank-status rank-status--locked">Silver needed</span>
+        </div>
+        <div class="rank-row rank-row--locked" id="rank-pro">
+          <span>✨ A320 Pro</span>
+          <span class="rank-status rank-status--locked">Gold needed</span>
+        </div>
+        <p class="rank-hint">Complete more lessons to unlock new display titles.</p>
+      </div>
+
+      <!-- ⑥ Lesson Completion Record -->
+      <div class="profile-section-card">
+        <p class="profile-card-label">LESSON COMPLETION RECORD</p>
+        <div class="completion-record">
+          <span class="completion-count" id="comp-count">0×</span>
+          <div>
+            <p class="completion-title">Airbus A320 full path completed</p>
+            <p class="completion-sub" id="comp-sub">Complete the A320 lesson path to earn your first badge.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-logo">
+        <img src="assets/logo-blue.png" alt="AeroLogic Logo" class="footer-logo-icon">
+        <span class="footer-logo-text">AeroLogic</span>
+      </div>
+      <div class="footer-tagline"><p>Flight sim made easier.</p></div>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-bottom">
+      <p class="footer-description">Virtual aviation learning website for flight simulator users. Not for real-world flight training.</p>
+      <div class="footer-nav">
+        <a href="index.html">Home</a>
+        <a href="lessons.html">Lessons</a>
+        <a href="myprogress.html">My Progress</a>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <p>© 2026 AeroLogic. Designed and developed by Alfonso Raphael Candia</p>
+    </div>
+  </footer>
+
+  <script>
+    function formatDate(dateStr, short) {
+      if (!dateStr) return short ? 'May 2025' : 'May 10, 2025';
+      const d = new Date(dateStr);
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      return short
+        ? months[d.getMonth()] + ' ' + d.getFullYear()
+        : months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+    }
+
+    async function loadProfile() {
+      const token = localStorage.getItem('token');
+      const user  = JSON.parse(localStorage.getItem('user') || 'null');
+
+      if (!token || !user) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      document.getElementById('profile-page').style.display = '';
+
+      // Fill from localStorage immediately
+      const initials = user.fullName.trim().split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+      document.getElementById('profile-avatar').textContent      = initials;
+      document.getElementById('profile-name').textContent        = user.fullName;
+      document.getElementById('profile-email-display').textContent = user.email;
+      document.getElementById('info-fullname').textContent       = user.fullName;
+      document.getElementById('info-email').textContent          = user.email;
+      document.getElementById('meta-id').textContent             = '#' + (user.id || '').slice(-4).toUpperCase();
+
+      // Logout button
+      document.getElementById('profile-logout-btn').addEventListener('click', () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = 'login.html';
+      });
+
+      try {
+        const [progRes, lessonsRes, meRes] = await Promise.all([
+          fetch('/api/progress/me',      { headers: { 'Authorization': `Bearer ${token}` } }),
+          fetch('/api/lessons/airbus-a320'),
+          fetch('/api/auth/me',          { headers: { 'Authorization': `Bearer ${token}` } })
+        ]);
+
+        // Account created date from /api/auth/me
+        if (meRes.ok) {
+          const me = await meRes.json();
+          if (me.createdAt) {
+            document.getElementById('meta-since').textContent  = formatDate(me.createdAt, true);
+            document.getElementById('info-created').textContent = formatDate(me.createdAt, false);
+          }
+        }
+
+        const lessons        = lessonsRes.ok ? await lessonsRes.json() : [];
+        const totalLessons   = lessons.length || 7;
+
+        if (!progRes.ok) return;
+        const progress       = await progRes.json();
+        const completedCount = progress.completedLessons.length;
+        const completionCount = progress.completionCount || 0;
+        const pct            = progress.progressPercentage || 0;
+
+        // Status pill
+        const statusEl = document.getElementById('info-status');
+        statusEl.textContent = progress.status || 'Not Started';
+        statusEl.className = 'status-pill';
+        if      (progress.status === 'In Progress') statusEl.classList.add('status-pill--inprogress');
+        else if (progress.status === 'Completed')   statusEl.classList.add('status-pill--completed');
+        else                                        statusEl.classList.add('status-pill--notstarted');
+
+        // Progress bar
+        document.getElementById('prog-bar').style.width       = pct + '%';
+        document.getElementById('prog-pct').textContent       = pct + '%';
+        document.getElementById('prog-count').textContent     = completedCount + ' of ' + totalLessons;
+
+        // Current lesson title
+        const currentLesson = lessons.find(l => l.lessonKey === progress.currentLessonKey);
+        document.getElementById('prog-current-lesson').textContent =
+          currentLesson ? currentLesson.title : (progress.currentLessonKey || '—');
+
+        // Rank chip in hero
+        let rankLabel = '✈ A320 Beginner Learner';
+        if (completionCount >= 3)      rankLabel = '✨ A320 Pro';
+        else if (completionCount >= 2) rankLabel = '🛡 A320 Co-Pilot';
+        else if (completionCount >= 1) rankLabel = '★ A320 Bronze';
+        document.getElementById('profile-rank-chip').textContent = rankLabel;
+
+        // Badges
+        const badgeDefs = [
+          { id: 'badge-bronze',   threshold: 1 },
+          { id: 'badge-silver',   threshold: 2 },
+          { id: 'badge-gold',     threshold: 3 },
+          { id: 'badge-platinum', threshold: 4 }
+        ];
+        badgeDefs.forEach(b => {
+          const el = document.getElementById(b.id);
+          if (completionCount >= b.threshold) {
+            el.classList.remove('locked');
+            el.classList.add('unlocked');
+          }
+        });
+
+        // Badge hint
+        const nextBadge = badgeDefs.find(b => completionCount < b.threshold);
+        const hintEl    = document.getElementById('badge-hint');
+        if (!nextBadge) {
+          hintEl.textContent = '🏆 All A320 achievement badges unlocked!';
+        } else if (completionCount === 0) {
+          hintEl.textContent = '🔒 Complete the A320 lesson path to earn your first badge.';
+        } else {
+          const needed = nextBadge.threshold - completionCount;
+          const names  = { 'badge-bronze': 'Bronze', 'badge-silver': 'Silver', 'badge-gold': 'Gold', 'badge-platinum': 'Platinum' };
+          hintEl.textContent = `🔒 Complete A320 ${needed} more time${needed > 1 ? 's' : ''} to unlock ${names[nextBadge.id]}.`;
+        }
+
+        // Rank rows — update active state
+        if (completionCount >= 2) {
+          document.getElementById('rank-copilot').className   = 'rank-row rank-row--active';
+          document.getElementById('rank-copilot').querySelector('.rank-status').className = 'rank-status rank-status--active';
+          document.getElementById('rank-copilot').querySelector('.rank-status').textContent = 'Active';
+        }
+        if (completionCount >= 3) {
+          document.getElementById('rank-pro').className       = 'rank-row rank-row--active';
+          document.getElementById('rank-pro').querySelector('.rank-status').className = 'rank-status rank-status--active';
+          document.getElementById('rank-pro').querySelector('.rank-status').textContent = 'Active';
+        }
+
+        // Completion record
+        document.getElementById('comp-count').textContent = completionCount + '×';
+        const compSub = document.getElementById('comp-sub');
+        if (completionCount === 0) {
+          compSub.textContent = 'Complete the A320 lesson path to earn your first badge.';
+        } else {
+          const timesText  = completionCount === 1 ? 'once' : completionCount + ' times';
+          const badgeName  = completionCount >= 4 ? 'Platinum' : completionCount === 3 ? 'Gold' : completionCount === 2 ? 'Silver' : 'Bronze';
+          compSub.textContent = `Completed ${timesText} · ${badgeName} rank earned`;
+        }
+
+      } catch (err) {
+        console.error('Profile load error:', err);
+      }
+    }
+
+    loadProfile();
+  </script>
+  <script src="navbar.js"></script>
+</body>
+</html>

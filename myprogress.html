@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Progress – Aerologic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=LINE+Seed+JP:wght@100;400;700;800&family=Momo+Trust+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="navbar">
+    <div class="navbar-logo">
+      <img src="assets/logo-blue.png" alt="Logo">
+      <img src="assets/logo-name-text.png" alt="Aerologic">
+    </div>
+    <div class="navbar-links">
+      <a href="index.html">Home</a>
+      <a href="lessons.html">Lessons</a>
+      <a href="myprogress.html" class="active">My Progress</a>
+    </div>
+    <div class="navbar-right" id="navbar-right">
+      <a href="signup.html" class="signup-btn">Sign up or Log in</a>
+    </div>
+  </div>
+
+  <!-- Guest state -->
+  <div id="state-guest" class="hidden">
+    <section class="auth-section">
+      <div class="auth-card">
+        <h1 class="auth-heading">Track your progress</h1>
+        <p class="auth-subheading">Log in or sign up to save and view your lesson progress.</p>
+        <div style="display:flex; gap:16px; margin-top:24px;">
+          <a href="login.html" class="btn-auth" style="text-align:center; text-decoration:none;">Log In</a>
+          <a href="signup.html" class="btn-auth" style="text-align:center; text-decoration:none; background:transparent; color:var(--color-primary); border:2px solid var(--color-primary);">Sign Up</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Logged in state -->
+  <div id="state-user" class="hidden">
+    <div class="pg-wrap">
+
+      <div class="pg-header">
+        <span class="pg-breadcrumb">DASHBOARD</span>
+        <h1 class="pg-h1">My Progress</h1>
+        <p class="pg-sub">Track your Airbus A320 learning journey.</p>
+      </div>
+
+      <!-- Row 1: Learner card + Stats grid -->
+      <div class="pg-row pg-row--top">
+
+        <div class="pg-learner-card">
+          <div class="pg-learner-inner">
+            <div class="pg-avatar-wrap">
+              <div class="pg-avatar" id="user-avatar">A</div>
+              <span class="pg-avatar-dot"></span>
+            </div>
+            <div class="pg-learner-info">
+              <p class="pg-learner-name" id="user-name">Loading...</p>
+              <p class="pg-learner-meta"><span id="user-email-meta"></span> · Learner ID <span id="learner-id">#0000</span></p>
+              <div class="pg-tag-row">
+                <span class="pg-tag pg-tag--aircraft">✈ Airbus A320</span>
+                <span class="pg-tag pg-tag--rank" id="rank-tag">★ Beginner Learner</span>
+                <span class="pg-tag pg-tag--saved">✓ Progress saved</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pg-stats-grid">
+          <div class="pg-stat-card">
+            <p class="pg-stat-label">OVERALL</p>
+            <p class="pg-stat-big" id="stat-pct">0%</p>
+            <div class="pg-bar-track"><div class="pg-bar-fill" id="stat-bar" style="width:0%"></div></div>
+          </div>
+          <div class="pg-stat-card">
+            <p class="pg-stat-label">COMPLETED</p>
+            <p class="pg-stat-big" id="stat-completed">0</p>
+            <p class="pg-stat-sub">of 7 lessons</p>
+          </div>
+          <div class="pg-stat-card">
+            <p class="pg-stat-label">STATUS</p>
+            <span class="pg-status-pill pg-status--notstarted" id="stat-status">Not Started</span>
+          </div>
+          <div class="pg-stat-card">
+            <p class="pg-stat-label">TIMES FINISHED</p>
+            <p class="pg-stat-big" id="stat-times">0×</p>
+            <p class="pg-stat-sub" id="stat-times-sub">Not completed yet</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Row 2: Aircraft progress + Right column -->
+      <div class="pg-row pg-row--mid">
+
+        <div class="pg-aircraft-card">
+          <div class="pg-aircraft-header">
+            <div>
+              <p class="pg-aircraft-title">Airbus A320 — Normal Procedures</p>
+              <p class="pg-aircraft-sub">Current lesson: <span id="current-lesson-name">—</span></p>
+            </div>
+            <span class="pg-avail-badge">✓ Available</span>
+          </div>
+
+          <div class="pg-bar-track pg-bar-track--aircraft">
+            <div class="pg-bar-fill" id="aircraft-bar" style="width:0%"></div>
+          </div>
+
+          <div class="pg-lesson-list" id="lesson-list">
+            <!-- filled by JS from MongoDB -->
+          </div>
+
+          <div class="pg-aircraft-btns">
+            <a href="lessons.html#airbus-a320-step1" class="pg-btn-continue" id="continue-btn">▶ Start Lesson</a>
+            <a href="lessons.html#airbus-a320" class="pg-btn-secondary">View Lessons</a>
+          </div>
+        </div>
+
+        <div class="pg-right-col">
+
+          <div class="pg-record-card">
+            <p class="pg-section-label">COMPLETION RECORD</p>
+            <div class="pg-record-row">
+              <span class="pg-record-key">Full path finished</span>
+              <span class="pg-record-val" id="record-count">0×</span>
+            </div>
+            <div class="pg-record-row">
+              <span class="pg-record-key">Aircraft</span>
+              <span class="pg-record-val">Airbus A320</span>
+            </div>
+            <div class="pg-record-row">
+              <span class="pg-record-key">Rank</span>
+              <span class="pg-rank-chip" id="record-rank">—</span>
+            </div>
+            <div class="pg-record-hint hidden" id="record-hint"></div>
+          </div>
+
+          <div class="pg-completed-aircraft-card">
+            <p class="pg-section-label">COMPLETED AIRCRAFT</p>
+            <div id="completed-aircraft-list">
+              <p class="pg-no-data">Complete the full A320 path to unlock.</p>
+            </div>
+            <div class="pg-coming-soon-row">🔒 More aircraft coming soon</div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-logo">
+        <img src="assets/logo-blue.png" alt="AeroLogic Logo" class="footer-logo-icon">
+        <span class="footer-logo-text">AeroLogic</span>
+      </div>
+      <div class="footer-tagline"><p>Flight sim made easier.</p></div>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-bottom">
+      <p class="footer-description">Virtual aviation learning website for flight simulator users. Not for real-world flight training.</p>
+      <div class="footer-nav">
+        <a href="index.html">Home</a>
+        <a href="lessons.html">Lessons</a>
+        <a href="myprogress.html">My Progress</a>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <p>© 2026 AeroLogic. Designed and developed by Alfonso Raphael Candia</p>
+    </div>
+  </footer>
+
+  <script>
+    function getBadge(count) {
+      if (count >= 4) return { label: '★ Platinum',        cls: 'rank--platinum' };
+      if (count === 3) return { label: '★ Gold',           cls: 'rank--gold'     };
+      if (count === 2) return { label: '★ Silver',         cls: 'rank--silver'   };
+      if (count === 1) return { label: '★ Bronze',         cls: 'rank--bronze'   };
+      return              { label: '✈ Beginner Learner', cls: 'rank--beginner'  };
+    }
+
+    async function loadProgress() {
+      const token = localStorage.getItem('token');
+      const user  = JSON.parse(localStorage.getItem('user') || 'null');
+
+      if (!token || !user) {
+        document.getElementById('state-guest').classList.remove('hidden');
+        return;
+      }
+
+      document.getElementById('state-user').classList.remove('hidden');
+
+      // Avatar initials (up to 2 letters)
+      const initials = user.fullName.trim().split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+      document.getElementById('user-avatar').textContent     = initials;
+      document.getElementById('user-name').textContent       = user.fullName;
+      document.getElementById('user-email-meta').textContent = user.email;
+      document.getElementById('learner-id').textContent      = '#' + (user.id || '').slice(-4).toUpperCase();
+
+      try {
+        const [progRes, lessonsRes] = await Promise.all([
+          fetch('/api/progress/me',          { headers: { 'Authorization': `Bearer ${token}` } }),
+          fetch('/api/lessons/airbus-a320')
+        ]);
+
+        if (!progRes.ok) throw new Error('Failed to load progress');
+        const progress = await progRes.json();
+        const lessons  = lessonsRes.ok ? await lessonsRes.json() : [];
+
+        const pct             = progress.progressPercentage || 0;
+        const completedCount  = progress.completedLessons.length;
+        const completionCount = progress.completionCount || 0;
+
+        // Stat cards
+        document.getElementById('stat-pct').textContent       = pct + '%';
+        document.getElementById('stat-bar').style.width       = pct + '%';
+        document.getElementById('stat-completed').textContent = completedCount;
+        document.getElementById('aircraft-bar').style.width   = pct + '%';
+
+        // Status pill
+        const statusEl = document.getElementById('stat-status');
+        statusEl.textContent = progress.status;
+        statusEl.className   = 'pg-status-pill';
+        if      (progress.status === 'In Progress') statusEl.classList.add('pg-status--inprogress');
+        else if (progress.status === 'Completed')   statusEl.classList.add('pg-status--completed');
+        else                                        statusEl.classList.add('pg-status--notstarted');
+
+        // Times finished
+        document.getElementById('stat-times').textContent     = completionCount + '×';
+        document.getElementById('stat-times-sub').textContent =
+          completionCount === 0 ? 'Not completed yet' :
+          completionCount === 1 ? 'Completed once'    :
+          `Completed ${completionCount} times`;
+
+        // Badge / rank tag
+        const badge     = getBadge(completionCount);
+        const rankTagEl = document.getElementById('rank-tag');
+        rankTagEl.textContent = badge.label;
+        rankTagEl.className   = `pg-tag pg-tag--rank ${badge.cls}`;
+
+        // Current lesson name
+        const currentLesson = lessons.find(l => l.lessonKey === progress.currentLessonKey);
+        document.getElementById('current-lesson-name').textContent =
+          currentLesson ? currentLesson.title : '—';
+
+        // Lesson list — pulled from MongoDB via /api/lessons
+        const listEl = document.getElementById('lesson-list');
+        listEl.innerHTML = lessons.map(l => {
+          const isDone    = progress.completedLessons.includes(l.lessonKey);
+          const isCurrent = l.lessonKey === progress.currentLessonKey && !isDone;
+
+          if (isDone) return `
+            <div class="pg-lesson-row pg-lesson-row--done">
+              <span class="pg-lesson-icon pg-lesson-icon--done">✓</span>
+              <span class="pg-lesson-title">${l.title}</span>
+              <span class="pg-lesson-status pg-lesson-status--done">Done</span>
+            </div>`;
+
+          if (isCurrent) return `
+            <div class="pg-lesson-row pg-lesson-row--current">
+              <span class="pg-lesson-icon pg-lesson-icon--current">▶</span>
+              <span class="pg-lesson-title">${l.title}</span>
+              <span class="pg-lesson-status pg-lesson-status--current">In progress</span>
+            </div>`;
+
+          return `
+            <div class="pg-lesson-row pg-lesson-row--pending">
+              <span class="pg-lesson-icon pg-lesson-icon--pending">🔒</span>
+              <span class="pg-lesson-title">${l.title}</span>
+              <span class="pg-lesson-status pg-lesson-status--pending">Pending</span>
+            </div>`;
+        }).join('');
+
+        // Continue / Start / Review button
+        const continueBtn     = document.getElementById('continue-btn');
+        const currentIndex    = lessons.findIndex(l => l.lessonKey === progress.currentLessonKey);
+        const currentStep     = Math.max(currentIndex + 1, 1);
+
+        if (progress.status === 'Completed') {
+          continueBtn.textContent = '↩ Review Lesson';
+          continueBtn.href = 'lessons.html#airbus-a320-step1';
+        } else if (completedCount === 0) {
+          continueBtn.textContent = '▶ Start Lesson';
+          continueBtn.href = 'lessons.html#airbus-a320-step1';
+        } else {
+          continueBtn.textContent = '▶ Continue Learning';
+          continueBtn.href = `lessons.html#airbus-a320-step${currentStep}`;
+        }
+
+        // Completion record
+        document.getElementById('record-count').textContent = completionCount + '×';
+        const rankEl = document.getElementById('record-rank');
+        if (completionCount >= 1) {
+          rankEl.textContent = badge.label;
+          rankEl.className   = `pg-rank-chip pg-rank-chip--earned ${badge.cls}`;
+        }
+
+        // Next badge hint
+        const hintEl    = document.getElementById('record-hint');
+        const nextNames = { 0: 'Bronze', 1: 'Silver', 2: 'Gold', 3: 'Platinum' };
+        if (completionCount < 4) {
+          hintEl.textContent = completionCount === 0
+            ? '🏆 Complete the full A320 path to earn Bronze badge.'
+            : `🏆 Complete ${completionCount + 1}× to unlock ${nextNames[completionCount]} badge`;
+          hintEl.classList.remove('hidden');
+        }
+
+        // Completed aircraft section
+        const completedAircraftEl = document.getElementById('completed-aircraft-list');
+        if (completionCount >= 1) {
+          completedAircraftEl.innerHTML = `
+            <div class="pg-done-aircraft-row">
+              <img src="assets/logo-blue.png" alt="" class="pg-done-aircraft-icon">
+              <div>
+                <p class="pg-done-aircraft-name">Airbus A320</p>
+                <p class="pg-done-aircraft-meta">Completed ${completionCount === 1 ? 'once' : completionCount + ' times'} · ${badge.label}</p>
+              </div>
+              <span class="pg-done-chip">Done</span>
+            </div>`;
+        }
+
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    loadProgress();
+  </script>
+  <script src="navbar.js"></script>
+</body>
+</html>

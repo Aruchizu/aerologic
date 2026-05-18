@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lessons – Aerologic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=LINE+Seed+JP:wght@100;400;700;800&family=Momo+Trust+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="navbar">
+        <div class="navbar-logo">
+            <img src="assets/logo-blue.png" alt="Logo">
+            <img src="assets/logo-name-text.png" alt="Aerologic">
+        </div>
+        <div class="navbar-links">
+            <a href="index.html">Home</a>
+            <a href="lessons.html" class="active">Lessons</a>
+            <a href="myprogress.html">My Progress</a>
+        </div>
+        <div class="navbar-right" id="navbar-right">
+            <a href="signup.html" class="signup-btn">Sign up or Log in</a>
+        </div>
+    </div>
+
+    <!-- VIEW: Aircraft Selection -->
+    <div id="view-selection">
+        <section class="lessons-header">
+            <h1 class="lessons-heading">Choose your aircraft</h1>
+            <p class="lessons-subheading">Select an aircraft lesson path and begin learning the basic flow of a virtual flight through guided, beginner-friendly lessons.</p>
+        </section>
+
+        <section class="aircraft-grid" id="aircraft-grid">
+            <!-- filled by JS from /api/aircraft -->
+        </section>
+    </div>
+
+    <!-- VIEW: A320 Lesson Overview -->
+    <div id="view-a320" class="lesson-view hidden">
+        <section class="lesson-overview-header">
+            <a href="lessons.html" class="back-link">← Back to aircraft selection</a>
+            <span class="lesson-path-badge">Airbus A320 lesson path</span>
+            <h1 class="lesson-main-heading">Learn the A320 virtual flight flow.</h1>
+            <p class="lesson-disclaimer">⚠️ For virtual flight simulation learning only.</p>
+        </section>
+
+        <section class="lesson-overview-card">
+            <div class="lesson-overview-left">
+                <span class="selected-lesson-badge">Selected Lesson</span>
+                <h2 class="lesson-overview-title">A320 Lesson Overview</h2>
+                <p class="lesson-overview-desc">Start with the basic Airbus A320 virtual flight flow. This lesson path will guide you through aircraft preparation, flight planning, taxiing, takeoff, cruise, approach and landing, and shutdown.</p>
+                <a href="#airbus-a320-step1" class="btn-overview-start">Start Lesson</a>
+            </div>
+            <div class="lesson-overview-right">
+                <div class="lesson-video-placeholder">
+                    <div class="play-btn-circle">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="var(--color-primary)">
+                            <polygon points="5,3 19,12 5,21"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="lesson-resources">
+            <h2 class="lesson-resources-heading">Lesson Resources</h2>
+            <div class="resources-grid">
+                <div class="resources-col">
+                    <h3 class="resources-col-title">Planning</h3>
+                    <a href="#" class="resource-btn">SimBrief</a>
+                    <a href="#" class="resource-btn">X-Plane 11 Steam</a>
+                    <a href="#" class="resource-btn">YANSH for XP11</a>
+                </div>
+                <div class="resources-col">
+                    <h3 class="resources-col-title">Scenery</h3>
+                    <a href="#" class="resource-btn">Airwil RPVE</a>
+                    <a href="#" class="resource-btn">CloudSurf RPLL</a>
+                </div>
+                <div class="resources-col">
+                    <h3 class="resources-col-title">Add-ons</h3>
+                    <a href="#" class="resource-btn">Better Pushback</a>
+                    <a href="#" class="resource-btn">Little XPconnect</a>
+                    <a href="#" class="resource-btn">Toliss A320</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- VIEW: A320 Lesson Step -->
+    <div id="view-a320-step" class="lesson-view hidden">
+        <section class="lesson-step-header">
+            <a href="#airbus-a320" class="back-link">← Back to Lesson Overview</a>
+        </section>
+
+        <div class="lesson-step-tabs" id="lesson-tabs"></div>
+
+        <div class="lesson-step-content">
+            <div class="lesson-step-left">
+                <div class="lesson-step-title-row">
+                    <h2 class="lesson-step-title" id="step-title"></h2>
+                </div>
+                <div class="lesson-checklist-card">
+                    <h3 class="checklist-heading" id="checklist-heading">Checklist</h3>
+                    <ul class="checklist-list" id="step-checklist"></ul>
+                </div>
+                <button class="btn-mark-complete" id="btn-complete">Mark as Complete</button>
+            </div>
+            <div class="lesson-step-right">
+                <p class="lesson-video-label">Lesson Video</p>
+                <h3 class="lesson-video-title" id="step-video-title"></h3>
+                <div class="lesson-video-placeholder">
+                    <div class="play-btn-circle">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="var(--color-primary)">
+                            <polygon points="5,3 19,12 5,21"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="footer-logo">
+                <img src="assets/logo-blue.png" alt="AeroLogic Logo" class="footer-logo-icon">
+                <span class="footer-logo-text">AeroLogic</span>
+            </div>
+            <div class="footer-tagline">
+                <p>Flight sim made easier.</p>
+            </div>
+        </div>
+        <div class="footer-divider"></div>
+        <div class="footer-bottom">
+            <p class="footer-description">Virtual aviation learning website for flight simulator users. Not for real-world flight training.</p>
+            <div class="footer-nav">
+                <a href="index.html">Home</a>
+                <a href="lessons.html">Lessons</a>
+                <a href="myprogress.html">My Progress</a>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <p>© 2026 AeroLogic. Designed and developed by Alfonso Raphael Candia</p>
+        </div>
+    </footer>
+
+    <script>
+        let allLessons  = [];
+        let allAircraft = [];
+
+        async function fetchLessons() {
+            if (allLessons.length > 0) return allLessons;
+            const res = await fetch('/api/lessons/airbus-a320');
+            allLessons = await res.json();
+            return allLessons;
+        }
+
+        async function fetchAircraft() {
+            if (allAircraft.length > 0) return allAircraft;
+            const res = await fetch('/api/aircraft');
+            allAircraft = await res.json();
+            return allAircraft;
+        }
+
+        function hideAll() {
+            document.getElementById('view-selection').classList.add('hidden');
+            document.getElementById('view-a320').classList.add('hidden');
+            document.getElementById('view-a320-step').classList.add('hidden');
+        }
+
+        async function showSelection() {
+            hideAll();
+            document.getElementById('view-selection').classList.remove('hidden');
+
+            const aircraft = await fetchAircraft();
+            const gridEl = document.getElementById('aircraft-grid');
+            gridEl.innerHTML = aircraft.map(a => {
+                if (a.status === 'available') {
+                    return `
+                        <div class="aircraft-card aircraft-card--available">
+                            <span class="aircraft-badge aircraft-badge--available">Available Now</span>
+                            <h2 class="aircraft-name aircraft-name--available">${a.name}</h2>
+                            <div class="aircraft-image-wrap">
+                                <img src="${a.imagePath}" alt="${a.name}" class="aircraft-image">
+                            </div>
+                            <p class="aircraft-description">${a.description}</p>
+                            <a href="#${a.slug}" class="btn-start-lesson">Start Lesson</a>
+                        </div>`;
+                }
+                return `
+                    <div class="aircraft-card aircraft-card--coming">
+                        <span class="aircraft-badge aircraft-badge--coming">Coming Soon</span>
+                        <h2 class="aircraft-name aircraft-name--coming">${a.name}</h2>
+                        <div class="aircraft-image-wrap aircraft-image-wrap--placeholder"></div>
+                        <div class="aircraft-desc-placeholder"></div>
+                        <button class="btn-coming-soon" disabled>Coming Soon</button>
+                    </div>`;
+            }).join('') + `
+                <div class="aircraft-card aircraft-card--more">
+                    <p class="aircraft-more-text">More Aircraft Lessons Coming Soon!</p>
+                </div>`;
+        }
+
+        function showOverview() {
+            hideAll();
+            document.getElementById('view-a320').classList.remove('hidden');
+        }
+
+        async function showStep(stepNumber) {
+            const lessons = await fetchLessons();
+            const lesson  = lessons[stepNumber - 1];
+            if (!lesson) return;
+
+            // Determine unlocked steps from user progress
+            let unlockedUpTo = lessons.length; // guests can browse all
+            const token = localStorage.getItem('token');
+            if (token) {
+                try {
+                    const pRes = await fetch('/api/progress/me', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    if (pRes.ok) {
+                        const prog = await pRes.json();
+                        unlockedUpTo = prog.completedLessons.length;
+                    }
+                } catch {}
+            }
+
+            // If logged in and step is locked, redirect to last unlocked step
+            if (token && stepNumber - 1 > unlockedUpTo) {
+                window.location.hash = `airbus-a320-step${unlockedUpTo + 1}`;
+                return;
+            }
+
+            // Build tabs
+            const tabsEl = document.getElementById('lesson-tabs');
+            tabsEl.innerHTML = lessons.map((l, i) => {
+                const isActive = i + 1 === stepNumber;
+                const isLocked = token && i > unlockedUpTo;
+                if (isLocked) {
+                    return `<button class="lesson-tab lesson-tab--locked" disabled title="Complete previous lesson to unlock">${l.title}</button>`;
+                }
+                return `<button class="lesson-tab ${isActive ? 'lesson-tab--active' : ''}"
+                    onclick="window.location.hash='airbus-a320-step${i + 1}'">${l.title}</button>`;
+            }).join('');
+
+            document.getElementById('step-title').textContent      = lesson.title;
+            document.getElementById('step-video-title').textContent = lesson.title;
+            document.getElementById('checklist-heading').textContent = lesson.title + ' Checklist';
+
+            const checklistEl = document.getElementById('step-checklist');
+            checklistEl.innerHTML = lesson.checklist.map(item => `
+                <li class="checklist-item">
+                    <input type="checkbox" class="checklist-checkbox">
+                    <span>${item}</span>
+                </li>
+            `).join('');
+
+            // Disable button until all checkboxes checked
+            const btn = document.getElementById('btn-complete');
+            btn.textContent = 'Mark as Complete';
+            btn.disabled = true;
+            btn.style.backgroundColor = '';
+
+            function updateBtnState() {
+                const boxes = document.querySelectorAll('.checklist-checkbox');
+                btn.disabled = ![...boxes].every(b => b.checked);
+            }
+            document.querySelectorAll('.checklist-checkbox').forEach(cb =>
+                cb.addEventListener('change', updateBtnState)
+            );
+
+            hideAll();
+            document.getElementById('view-a320-step').classList.remove('hidden');
+        }
+
+        async function handleHash() {
+            const hash      = window.location.hash;
+            const stepMatch = hash.match(/^#(.+)-step(\d+)$/);
+
+            if (stepMatch) {
+                await showStep(parseInt(stepMatch[2]));
+            } else if (hash.length > 1) {
+                showOverview();
+            } else {
+                await showSelection();
+            }
+        }
+
+        // Mark as Complete
+        document.getElementById('btn-complete').addEventListener('click', async () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const stepMatch = window.location.hash.match(/^#(.+)-step(\d+)$/);
+            if (!stepMatch) return;
+            const stepNum = parseInt(stepMatch[2]);
+
+            const lessons = await fetchLessons();
+            const lesson  = lessons[stepNum - 1];
+            if (!lesson) return;
+
+            const btn = document.getElementById('btn-complete');
+            btn.textContent = 'Saving...';
+            btn.disabled    = true;
+
+            try {
+                const res = await fetch('/api/progress/complete', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type':  'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ lessonKey: lesson.lessonKey })
+                });
+
+                if (!res.ok) throw new Error('Failed to save');
+
+                btn.textContent          = '✓ Completed!';
+                btn.style.backgroundColor = '#1a7a3c';
+
+                setTimeout(() => {
+                    if (stepNum < lessons.length) {
+                        window.location.hash = `airbus-a320-step${stepNum + 1}`;
+                    } else {
+                        window.location.href = 'myprogress.html';
+                    }
+                }, 1000);
+
+            } catch (err) {
+                btn.textContent = 'Mark as Complete';
+                btn.disabled    = false;
+                alert('Could not save progress. Make sure you are logged in.');
+            }
+        });
+
+        handleHash();
+        window.addEventListener('hashchange', handleHash);
+    </script>
+    <script src="navbar.js"></script>
+</body>
+</html>

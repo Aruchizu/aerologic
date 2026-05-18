@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aerologic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=LINE+Seed+JP:wght@100;400;700;800&family=Momo+Trust+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="navbar">
+        <div class="navbar-logo">
+            <img src="assets/logo-blue.png" alt="Logo">
+            <img src="assets/logo-name-text.png" alt="Aerologic">
+        </div>
+        <div class="navbar-links">
+            <a href="index.html" class="active">Home</a>
+            <a href="lessons.html">Lessons</a>
+            <a href="myprogress.html">My Progress</a>
+        </div>
+        <div class="navbar-right" id="navbar-right">
+            <a href="signup.html" class="signup-btn">Sign up or Log in</a>
+        </div>
+    </div>
+
+    <div class="video-container">
+        <video width="1320" height="381" controls autoplay loop muted>
+            <source src="your-video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <section class="hero-section">
+        <h1 class="hero-heading">Learn the <span class="highlight-flow">flow</span> behind every virtual flight.</h1>
+        <p class="hero-subheading">AeroLogic Virtual Flight Learning</p>
+        <div class="hero-buttons">
+            <a href="lessons.html" class="btn-primary">Start Learning</a>
+            <a href="lessons.html" class="btn-secondary">Explore Lessons</a>
+        </div>
+        <div class="scroll-explore">
+            <p class="scroll-text">Scroll to explore</p>
+            <div class="scroll-arrow-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="12 5 12 19 5 12"></polyline>
+                    <polyline points="12 5 12 19 19 12"></polyline>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-section">
+        <div class="about-left">
+            <p class="about-label">What is Aerologic</p>
+            <h2 class="about-heading">A clearer way to understand virtual flight procedures</h2>
+
+            <div class="about-description">
+                <p>AeroLogic is a beginner-friendly virtual aviation learning platform that guides simulator users through the basic flow of a virtual flight.</p>
+            </div>
+
+            <div class="about-note">
+                <p><strong>Note :</strong></p>
+                <p>Built for flight simulator learners, aviation hobbyists, and beginners who want structure before flying on their own.</p>
+            </div>
+
+            <a href="lessons.html" class="btn-view-lessons">View Lessons</a>
+        </div>
+
+        <div class="about-right">
+            <div class="feature-card">
+                <div class="card-left">
+                    <span class="card-number">01</span>
+                    <div>
+                        <h3 class="card-title">Guided Flight Flow</h3>
+                        <p class="card-description">Follow the normal sequence of a virtual flight, from setup to landing.</p>
+                    </div>
+                </div>
+                <div class="card-icon">✈️</div>
+            </div>
+
+            <div class="feature-card">
+                <div class="card-left">
+                    <span class="card-number">02</span>
+                    <div>
+                        <h3 class="card-title">Beginner-Friendly Lessons</h3>
+                        <p class="card-description">Learn through simple explanations instead of overwhelming technical terms.</p>
+                    </div>
+                </div>
+                <div class="card-icon">📖</div>
+            </div>
+
+            <div class="feature-card">
+                <div class="card-left">
+                    <span class="card-number">03</span>
+                    <div>
+                        <h3 class="card-title">Track Your Progress</h3>
+                        <p class="card-description">Save completed lessons and continue where you left off.</p>
+                    </div>
+                </div>
+                <div class="card-icon">📊</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="flight-path-section">
+        <h2 class="section-heading">Your Learning Flight Path</h2>
+        <p class="section-subtext">Follow the basic flow of a virtual flight, from preparation to shutdown.</p>
+
+        <div class="flight-path-cards">
+            <div class="path-card">
+                <span class="path-icon">✈️</span>
+                <span class="path-label">Aircraft Preparation</span>
+            </div>
+            <div class="path-card">
+                <span class="path-icon">📋</span>
+                <span class="path-label">Flight Planning</span>
+            </div>
+            <div class="path-card">
+                <span class="path-icon">🛣️</span>
+                <span class="path-label">Taxiing</span>
+            </div>
+            <div class="path-card">
+                <span class="path-icon">🚀</span>
+                <span class="path-label">Take Off</span>
+            </div>
+            <div class="path-card">
+                <span class="path-icon">☁️</span>
+                <span class="path-label">Cruise</span>
+            </div>
+            <div class="path-card">
+                <span class="path-icon">🛬</span>
+                <span class="path-label">Approach Landing</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="progress-section">
+        <div class="progress-content">
+            <h2 class="section-heading">Track Your Flight Progress</h2>
+            <p class="progress-description">Save your lesson progress, continue from your next unfinished step, and monitor your completed virtual flight lessons.</p>
+
+            <div class="progress-buttons">
+                <a href="myprogress.html" class="btn-progress-primary">View My Progress</a>
+                <a href="signup.html" class="btn-progress-secondary">Sign up to Save Progress</a>
+            </div>
+
+            <p class="progress-hint">Login to access your real-time progress.</p>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="footer-logo">
+                <img src="assets/logo-blue.png" alt="AeroLogic Logo" class="footer-logo-icon">
+                <span class="footer-logo-text">AeroLogic</span>
+            </div>
+            <div class="footer-tagline">
+                <p>Flight sim made easier.</p>
+            </div>
+        </div>
+
+        <div class="footer-divider"></div>
+
+        <div class="footer-bottom">
+            <p class="footer-description">Virtual aviation learning website for flight simulator users. Not for real-world flight training.</p>
+            <div class="footer-nav">
+                <a href="index.html">Home</a>
+                <a href="lessons.html">Lessons</a>
+                <a href="myprogress.html">My Progress</a>
+            </div>
+        </div>
+
+        <div class="footer-copyright">
+            <p>© 2026 AeroLogic. Designed and developed by Alfonso Raphael Candia</p>
+        </div>
+    </footer>
+
+  <script src="navbar.js"></script>
+</body>
+</html>
