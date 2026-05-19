@@ -26,6 +26,25 @@
         </div>
     </div>
 
+    <!-- Auth gate overlay -->
+    <div id="lessons-auth-gate" class="hidden">
+        <div class="lessons-gate-overlay">
+            <div class="lessons-gate-card">
+                <div class="lessons-gate-icon">✈️</div>
+                <h2 class="lessons-gate-heading">Login to Access Lessons</h2>
+                <p class="lessons-gate-sub">Create an account or log in to start your virtual flight learning journey and track your progress.</p>
+                <div class="lessons-gate-btns">
+                    <a href="signup.html" class="lessons-gate-btn-primary">Sign Up</a>
+                    <a href="login.html" class="lessons-gate-btn-secondary">Log In</a>
+                </div>
+                <button class="lessons-gate-back" onclick="history.back()">← Go Back</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Blurred content wrapper -->
+    <div id="lessons-blur-wrap">
+
     <!-- VIEW: Aircraft Selection -->
     <div id="view-selection">
         <section class="lessons-header">
@@ -70,20 +89,20 @@
             <div class="resources-grid">
                 <div class="resources-col">
                     <h3 class="resources-col-title">Planning</h3>
-                    <a href="#" class="resource-btn">SimBrief</a>
-                    <a href="#" class="resource-btn">X-Plane 11 Steam</a>
-                    <a href="#" class="resource-btn">YANSH for XP11</a>
+                    <a href="https://www.simbrief.com/home/" class="resource-btn" target="_blank" rel="noopener noreferrer">SimBrief</a>
+                    <a href="https://store.steampowered.com/app/269950/XPlane_11/" class="resource-btn" target="_blank" rel="noopener noreferrer">X-Plane 11 Steam</a>
+                    <a href="https://forums.x-plane.org/index.php?/files/file/37172-yet-another-nav-system-helper-yansh/" class="resource-btn" target="_blank" rel="noopener noreferrer">YANSH for XP11</a>
                 </div>
                 <div class="resources-col">
                     <h3 class="resources-col-title">Scenery</h3>
-                    <a href="#" class="resource-btn">Airwil RPVE</a>
-                    <a href="#" class="resource-btn">CloudSurf RPLL</a>
+                    <a href="https://forums.x-plane.org/index.php?/files/file/48770-airwil-rpve-ormoc-city-airport/" class="resource-btn" target="_blank" rel="noopener noreferrer">Airwil RPVE</a>
+                    <a href="https://store.x-plane.org/RPLL-Ninoy-Aquino-International-Airport_p_694.html" class="resource-btn" target="_blank" rel="noopener noreferrer">CloudSurf RPLL</a>
                 </div>
                 <div class="resources-col">
                     <h3 class="resources-col-title">Add-ons</h3>
-                    <a href="#" class="resource-btn">Better Pushback</a>
-                    <a href="#" class="resource-btn">Little XPconnect</a>
-                    <a href="#" class="resource-btn">Toliss A320</a>
+                    <a href="https://forums.x-plane.org/index.php?/files/file/32135-better-pushback/" class="resource-btn" target="_blank" rel="noopener noreferrer">Better Pushback</a>
+                    <a href="https://forums.x-plane.org/index.php?/files/file/34960-little-xpconnect/" class="resource-btn" target="_blank" rel="noopener noreferrer">Little XPconnect</a>
+                    <a href="https://tolisssimulations.com/index.php/products/a320/" class="resource-btn" target="_blank" rel="noopener noreferrer">Toliss A320</a>
                 </div>
             </div>
         </section>
@@ -122,6 +141,8 @@
         </div>
     </div>
 
+    </div><!-- /lessons-blur-wrap -->
+
     <footer class="footer">
         <div class="footer-top">
             <div class="footer-logo">
@@ -147,6 +168,12 @@
     </footer>
 
     <script>
+        // Auth gate — show overlay instead of redirecting
+        if (!localStorage.getItem('token')) {
+            document.getElementById('lessons-auth-gate').classList.remove('hidden');
+            document.getElementById('lessons-blur-wrap').classList.add('lessons-blurred');
+        }
+
         let allLessons  = [];
         let allAircraft = [];
 
@@ -293,7 +320,7 @@
         document.getElementById('btn-complete').addEventListener('click', async () => {
             const token = localStorage.getItem('token');
             if (!token) {
-                window.location.href = 'login.html';
+                window.location.href = 'index.html';
                 return;
             }
 

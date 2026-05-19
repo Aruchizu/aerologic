@@ -1,9 +1,22 @@
+*, *::before, *::after { box-sizing: border-box; }
+html { overflow-x: hidden; }
+
 body {
     background-color: var(--color-bg);
     background-image: url('assets/background pattern.png');
     background-repeat: repeat;
     margin-left: 100px;
     margin-right: 100px;
+    overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+    body   { margin-left: 16px; margin-right: 16px; }
+    .navbar { padding-left: 16px; padding-right: 16px; padding-top: 14px; padding-bottom: 14px; }
+}
+@media (max-width: 480px) {
+    body   { margin-left: 12px; margin-right: 12px; }
+    .navbar { padding-left: 12px; padding-right: 12px; padding-top: 12px; padding-bottom: 12px; }
 }
 
 :root {
@@ -107,6 +120,100 @@ body {
     gap: 12px;
 }
 
+/* ── Mobile hamburger button ── */
+.nav-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    z-index: 201;
+}
+.nav-hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--color-text);
+    border-radius: 2px;
+    transition: all 0.2s;
+}
+
+/* ── Mobile menu panel ── */
+.mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.18);
+    padding-top: 80px;
+}
+.mobile-menu--open {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+.mobile-menu-nav {
+    background: var(--color-surface);
+    border: 2px solid var(--color-primary);
+    border-radius: 16px;
+    padding: 20px 16px;
+    width: calc(100% - 32px);
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.mobile-menu-link {
+    display: block;
+    padding: 14px 18px;
+    background: #fff;
+    border: 1.5px solid var(--color-border);
+    border-radius: 10px;
+    font-family: "LINE Seed JP", sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--color-text);
+    text-decoration: none;
+    text-align: center;
+    transition: background 0.15s;
+}
+.mobile-menu-link:hover { background: rgba(31,92,255,0.06); }
+
+.mobile-menu-auth-btn {
+    display: block;
+    padding: 14px 18px;
+    border-radius: 10px;
+    font-family: "LINE Seed JP", sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.2s;
+    width: 100%;
+}
+.mobile-menu-auth-btn--signin {
+    background: transparent;
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+}
+.mobile-menu-auth-btn--signup,
+.mobile-menu-auth-btn--logout {
+    background: var(--color-primary);
+    color: #fff;
+}
+.mobile-menu-auth-btn:hover { opacity: 0.85; }
+
+@media (max-width: 768px) {
+    .nav-hamburger  { display: flex; }
+    .navbar-links   { display: none; }
+    .navbar-right   { display: none; }
+}
+
 .profile-nav-btn {
     text-decoration: none;
     display: inline-flex;
@@ -151,6 +258,17 @@ body {
     background: #f0f4ff;
 }
 
+.api-error-msg {
+    background: #fff3f3;
+    border: 1px solid #f5c6c6;
+    color: #b91c1c;
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    margin: 20px 0;
+}
+
 .video-container {
     margin-top: 27px;
     margin-left: auto;
@@ -161,6 +279,14 @@ body {
 .video-container video {
     width: 1320px;
     height: 381px;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 5px;
+}
+
+.hero-section-img {
+    width: 100%;
     max-width: 100%;
     height: auto;
     display: block;
@@ -1164,6 +1290,106 @@ body {
 
 /* ── Auth Pages ───────────────────────────────────────── */
 
+/* Lessons auth gate */
+.lessons-blurred {
+    filter: blur(6px);
+    pointer-events: none;
+    user-select: none;
+}
+
+.lessons-gate-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(2px);
+}
+
+.lessons-gate-card {
+    background: var(--color-surface);
+    border: 2px solid var(--color-border);
+    border-radius: 20px;
+    padding: 48px 40px;
+    max-width: 440px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.3);
+}
+
+.lessons-gate-icon {
+    font-size: 40px;
+    margin-bottom: 16px;
+}
+
+.lessons-gate-heading {
+    font-family: "Momo Trust Display", sans-serif;
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--color-text);
+    margin: 0 0 12px 0;
+}
+
+.lessons-gate-sub {
+    font-family: "LINE Seed JP", sans-serif;
+    font-size: 14px;
+    color: var(--color-muted);
+    line-height: 1.6;
+    margin: 0 0 28px 0;
+}
+
+.lessons-gate-btns {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.lessons-gate-btn-primary {
+    background: var(--color-primary);
+    color: #fff;
+    font-family: "LINE Seed JP", sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 12px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+.lessons-gate-btn-primary:hover { opacity: 0.88; }
+
+.lessons-gate-btn-secondary {
+    background: transparent;
+    color: var(--color-primary);
+    font-family: "LINE Seed JP", sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 12px 28px;
+    border-radius: 8px;
+    border: 2px solid var(--color-primary);
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+.lessons-gate-btn-secondary:hover { opacity: 0.75; }
+
+.lessons-gate-back {
+    display: block;
+    margin: 18px auto 0;
+    background: none;
+    border: none;
+    color: var(--color-muted);
+    font-family: "LINE Seed JP", sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.lessons-gate-back:hover { color: var(--color-text); }
+
 .auth-section {
     min-height: 80vh;
     display: flex;
@@ -1224,6 +1450,8 @@ body {
     font-size: 14px;
     font-weight: 700;
     color: var(--color-text);
+    display: block;
+    width: 100%;
 }
 
 .form-input {
@@ -1236,6 +1464,8 @@ body {
     background-color: var(--color-bg);
     outline: none;
     transition: border-color 0.2s ease;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .form-input:focus {
@@ -1712,6 +1942,7 @@ body {
     font-family: 'LINE Seed JP', sans-serif;
     font-size: 12px; font-weight: 700;
     padding: 4px 10px; border-radius: 20px; border: 1px solid transparent;
+    white-space: nowrap;
 }
 .pg-tag--aircraft   { background: rgba(31,92,255,0.08); color: var(--color-primary); border-color: rgba(31,92,255,0.2); }
 .pg-tag--rank       { background: rgba(180,83,9,0.08);  color: #92400e; border-color: rgba(180,83,9,0.2); }
@@ -2350,5 +2581,80 @@ body {
     .profile-title {
         font-size: 26px;
     }
+}
+
+/* ============================================================
+   RESPONSIVE — HOME PAGE
+   ============================================================ */
+@media (max-width: 768px) {
+    /* Hero */
+    .hero-heading    { font-size: 30px; }
+    .hero-subheading { font-size: 18px; margin-bottom: 28px; }
+    .hero-buttons    { flex-direction: column; align-items: center; gap: 12px; }
+    .btn-primary, .btn-secondary { width: 100%; max-width: 340px; }
+
+    /* About section: single column */
+    .about-section   { grid-template-columns: 1fr; gap: 32px; margin-top: 48px; }
+    .about-heading   { font-size: 32px; }
+    .section-heading { font-size: 30px; }
+
+    /* Flight path: 3 cols at tablet */
+    .flight-path-cards { grid-template-columns: repeat(3, 1fr); }
+
+    /* Progress section */
+    .progress-section { padding: 36px 24px; }
+
+    /* Footer */
+    .footer-bottom { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .footer-nav    { flex-wrap: wrap; gap: 16px; }
+
+    /* Feature cards */
+    .feature-card { padding: 20px 16px; gap: 12px; }
+}
+@media (max-width: 480px) {
+    .hero-heading      { font-size: 24px; }
+    .hero-subheading   { font-size: 16px; }
+    .about-heading     { font-size: 26px; }
+    .section-heading   { font-size: 24px; }
+    .flight-path-cards { grid-template-columns: repeat(2, 1fr); }
+    .feature-card      { flex-direction: column; }
+    .card-icon         { align-self: flex-end; }
+}
+
+/* ============================================================
+   RESPONSIVE — LESSONS PAGE
+   ============================================================ */
+@media (max-width: 768px) {
+    .lessons-heading      { font-size: 32px; }
+    .aircraft-grid        { grid-template-columns: 1fr; }
+    .lesson-overview-card { grid-template-columns: 1fr; gap: 24px; }
+    .lesson-main-heading  { font-size: 32px; }
+    .resources-grid       { grid-template-columns: 1fr; }
+    .lesson-step-content  { grid-template-columns: 1fr; }
+    .lesson-step-title    { font-size: 24px; }
+
+    /* Lesson tabs: horizontal scroll instead of wrapping */
+    .lesson-step-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 4px;
+        scrollbar-width: none;
+    }
+    .lesson-step-tabs::-webkit-scrollbar { display: none; }
+    .lesson-tab { flex-shrink: 0; }
+
+    /* Auth gate card */
+    .lessons-gate-card { padding: 36px 24px; }
+    .lessons-gate-btns { flex-wrap: wrap; }
+}
+
+/* ============================================================
+   RESPONSIVE — LOGIN / SIGNUP
+   ============================================================ */
+@media (max-width: 480px) {
+    .auth-card    { padding: 28px 20px; }
+    .auth-heading { font-size: 26px; }
+    .btn-auth     { width: 100%; }
 }
 

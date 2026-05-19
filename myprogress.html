@@ -49,6 +49,7 @@
         <h1 class="pg-h1">My Progress</h1>
         <p class="pg-sub">Track your Airbus A320 learning journey.</p>
       </div>
+      <div class="api-error-msg hidden" id="progress-api-error">We could not load your progress right now. Please refresh or log in again.</div>
 
       <!-- Row 1: Learner card + Stats grid -->
       <div class="pg-row pg-row--top">
@@ -197,9 +198,10 @@
       document.getElementById('state-user').classList.remove('hidden');
 
       // Avatar initials (up to 2 letters)
-      const initials = user.fullName.trim().split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+      const displayName = (user.fullName || 'AeroLogic User').trim();
+      const initials = displayName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
       document.getElementById('user-avatar').textContent     = initials;
-      document.getElementById('user-name').textContent       = user.fullName;
+      document.getElementById('user-name').textContent       = displayName;
       document.getElementById('user-email-meta').textContent = user.email;
       document.getElementById('learner-id').textContent      = '#' + (user.id || '').slice(-4).toUpperCase();
 
@@ -216,6 +218,8 @@
         const pct             = progress.progressPercentage || 0;
         const completedCount  = progress.completedLessons.length;
         const completionCount = progress.completionCount || 0;
+        const totalLessons    = lessons.length || 7;
+        const isFullyDone     = completedCount >= totalLessons;
 
         // Stat cards
         document.getElementById('stat-pct').textContent       = pct + '%';
@@ -231,23 +235,30 @@
         else if (progress.status === 'Completed')   statusEl.classList.add('pg-status--completed');
         else                                        statusEl.classList.add('pg-status--notstarted');
 
-        // Times finished
-        document.getElementById('stat-times').textContent     = completionCount + '×';
-        document.getElementById('stat-times-sub').textContent =
-          completionCount === 0 ? 'Not completed yet' :
-          completionCount === 1 ? 'Completed once'    :
-          `Completed ${completionCount} times`;
+        // Times finished — only count if current run is fully done
+        document.getElementById('stat-times').textContent     = isFullyDone ? completionCount + '×' : '0×';
+        document.getElementById('stat-times-sub').textContent = !isFullyDone ? 'Not completed yet' :
+          completionCount === 1 ? 'Completed once' : `Completed ${completionCount} times`;
 
-        // Badge / rank tag
+        // Badge / rank tag — only show earned badge when full path done
         const badge     = getBadge(completionCount);
         const rankTagEl = document.getElementById('rank-tag');
-        rankTagEl.textContent = badge.label;
-        rankTagEl.className   = `pg-tag pg-tag--rank ${badge.cls}`;
+        if (!isFullyDone || completionCount === 0) {
+          rankTagEl.textContent = '✈ Beginner Learner';
+          rankTagEl.className   = 'pg-tag pg-tag--rank rank--beginner';
+        } else {
+          rankTagEl.textContent = badge.label;
+          rankTagEl.className   = `pg-tag pg-tag--rank ${badge.cls}`;
+        }
 
         // Current lesson name
         const currentLesson = lessons.find(l => l.lessonKey === progress.currentLessonKey);
         document.getElementById('current-lesson-name').textContent =
-          currentLesson ? currentLesson.title : '—';
+          progress.status === 'Not Started' || completedCount === 0
+            ? 'No lesson started yet'
+            : progress.status === 'Completed'
+              ? 'Full path completed'
+              : currentLesson ? currentLesson.title : '—';
 
         // Lesson list — pulled from MongoDB via /api/lessons
         const listEl = document.getElementById('lesson-list');
@@ -294,26 +305,34 @@
         }
 
         // Completion record
-        document.getElementById('record-count').textContent = completionCount + '×';
+        document.getElementById('record-count').textContent = isFullyDone ? completionCount + '×' : '0×';
         const rankEl = document.getElementById('record-rank');
-        if (completionCount >= 1) {
+        if (isFullyDone && completionCount >= 1) {
           rankEl.textContent = badge.label;
           rankEl.className   = `pg-rank-chip pg-rank-chip--earned ${badge.cls}`;
+        } else {
+          rankEl.textContent = '—';
+          rankEl.className   = 'pg-rank-chip';
         }
 
         // Next badge hint
         const hintEl    = document.getElementById('record-hint');
         const nextNames = { 0: 'Bronze', 1: 'Silver', 2: 'Gold', 3: 'Platinum' };
-        if (completionCount < 4) {
-          hintEl.textContent = completionCount === 0
-            ? '🏆 Complete the full A320 path to earn Bronze badge.'
-            : `🏆 Complete ${completionCount + 1}× to unlock ${nextNames[completionCount]} badge`;
+        const displayCount = isFullyDone ? completionCount : 0;
+        if (displayCount < 4) {
+          hintEl.textContent = displayCount === 0
+            ? '🏆 Complete the full A320 path to earn Bronze.'
+            : `🏆 Complete ${displayCount + 1}× to unlock ${nextNames[displayCount]} badge`;
           hintEl.classList.remove('hidden');
         }
 
         // Completed aircraft section
         const completedAircraftEl = document.getElementById('completed-aircraft-list');
-        if (completionCount >= 1) {
+        if (!isFullyDone || completionCount === 0) {
+          completedAircraftEl.innerHTML = `
+            <p class="pg-no-data">No completed aircraft yet.</p>
+            <p class="pg-no-data" style="margin-top:4px;">Complete the full A320 path to unlock your first completed aircraft record.</p>`;
+        } else {
           completedAircraftEl.innerHTML = `
             <div class="pg-done-aircraft-row">
               <img src="assets/logo-blue.png" alt="" class="pg-done-aircraft-icon">
@@ -327,6 +346,7 @@
 
       } catch (err) {
         console.error(err);
+        document.getElementById('progress-api-error').classList.remove('hidden');
       }
     }
 

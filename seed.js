@@ -131,12 +131,13 @@ const lessons = [
     title:        'Shutdown',
     description:  'Complete the shutdown sequence after arriving at the gate.',
     checklist: [
-      'Set the parking brake after reaching the gate',
-      'Shut down both engines',
-      'Connect ground power (External GPU)',
-      'Turn off fuel pumps',
-      'Switch off external lights as needed',
-      'Complete the final shutdown checklist'
+      'Taxi to the assigned gate or ramp',
+      'Set parking brake',
+      'Turn off landing lights',
+      'Shut down engines',
+      'Turn off seatbelt signs',
+      'Switch external power on if available',
+      'Secure aircraft systems'
     ],
     videoPath: '',
     order: 7,

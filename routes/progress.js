@@ -33,10 +33,12 @@ router.post('/complete', protect, async (req, res) => {
     const totalLessons = lessons.length;
     if (totalLessons === 0) return res.status(400).json({ error: 'No lessons found for this aircraft' });
 
-    // Add to completedLessons if not already there
-    if (!progress.completedLessons.includes(lessonKey)) {
-      progress.completedLessons.push(lessonKey);
+    // If already completed, do nothing — prevents rebadge gaming
+    if (progress.completedLessons.includes(lessonKey)) {
+      return res.json(progress);
     }
+
+    progress.completedLessons.push(lessonKey);
 
     // Advance to next lesson
     const currentIndex = lessons.findIndex(l => l.lessonKey === lessonKey);

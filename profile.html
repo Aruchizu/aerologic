@@ -20,7 +20,6 @@
       <a href="index.html">Home</a>
       <a href="lessons.html">Lessons</a>
       <a href="myprogress.html">My Progress</a>
-      <a href="#">About</a>
     </div>
     <div class="navbar-right" id="navbar-right">
       <a href="signup.html" class="signup-btn">Sign up or Log in</a>
@@ -34,6 +33,7 @@
       <p class="page-kicker">ACCOUNT</p>
       <h1 class="profile-title">My Profile</h1>
       <p class="profile-subtitle">Your identity, achievements, and account settings.</p>
+      <div class="api-error-msg hidden" id="profile-api-error">We could not load your progress right now. Please refresh or log in again.</div>
 
       <!-- ① Hero card -->
       <div class="profile-hero-card">
@@ -203,18 +203,19 @@
       const user  = JSON.parse(localStorage.getItem('user') || 'null');
 
       if (!token || !user) {
-        window.location.href = 'login.html';
+        window.location.href = 'index.html';
         return;
       }
 
       document.getElementById('profile-page').style.display = '';
 
       // Fill from localStorage immediately
-      const initials = user.fullName.trim().split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+      const displayName = (user.fullName || 'AeroLogic User').trim();
+      const initials = displayName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
       document.getElementById('profile-avatar').textContent      = initials;
-      document.getElementById('profile-name').textContent        = user.fullName;
+      document.getElementById('profile-name').textContent        = displayName;
       document.getElementById('profile-email-display').textContent = user.email;
-      document.getElementById('info-fullname').textContent       = user.fullName;
+      document.getElementById('info-fullname').textContent       = displayName;
       document.getElementById('info-email').textContent          = user.email;
       document.getElementById('meta-id').textContent             = '#' + (user.id || '').slice(-4).toUpperCase();
 
@@ -222,7 +223,7 @@
       document.getElementById('profile-logout-btn').addEventListener('click', () => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
-        window.location.href = 'login.html';
+        window.location.href = 'index.html';
       });
 
       try {
@@ -246,9 +247,10 @@
 
         if (!progRes.ok) return;
         const progress       = await progRes.json();
-        const completedCount = progress.completedLessons.length;
+        const completedCount  = progress.completedLessons.length;
         const completionCount = progress.completionCount || 0;
-        const pct            = progress.progressPercentage || 0;
+        const pct             = progress.progressPercentage || 0;
+        const isFullyDone     = completedCount >= totalLessons;
 
         // Status pill
         const statusEl = document.getElementById('info-status');
@@ -266,13 +268,17 @@
         // Current lesson title
         const currentLesson = lessons.find(l => l.lessonKey === progress.currentLessonKey);
         document.getElementById('prog-current-lesson').textContent =
-          currentLesson ? currentLesson.title : (progress.currentLessonKey || '—');
+          progress.status === 'Not Started' || completedCount === 0
+            ? 'No lesson started yet'
+            : progress.status === 'Completed'
+              ? 'Full path completed'
+              : currentLesson ? currentLesson.title : '—';
 
-        // Rank chip in hero
-        let rankLabel = '✈ A320 Beginner Learner';
-        if (completionCount >= 3)      rankLabel = '✨ A320 Pro';
-        else if (completionCount >= 2) rankLabel = '🛡 A320 Co-Pilot';
-        else if (completionCount >= 1) rankLabel = '★ A320 Bronze';
+        // Rank chip in hero — only show earned rank when full path done
+        let rankLabel = '✈ Beginner Learner';
+        if (isFullyDone && completionCount >= 3)      rankLabel = '✨ A320 Pro';
+        else if (isFullyDone && completionCount >= 2) rankLabel = '🛡 A320 Co-Pilot';
+        else if (isFullyDone && completionCount >= 1) rankLabel = '★ Bronze';
         document.getElementById('profile-rank-chip').textContent = rankLabel;
 
         // Badges
@@ -284,50 +290,53 @@
         ];
         badgeDefs.forEach(b => {
           const el = document.getElementById(b.id);
-          if (completionCount >= b.threshold) {
+          if (isFullyDone && completionCount >= b.threshold) {
             el.classList.remove('locked');
             el.classList.add('unlocked');
           }
         });
 
-        // Badge hint
-        const nextBadge = badgeDefs.find(b => completionCount < b.threshold);
+        // Badge hint — use effectiveCount so corrupted data doesn't show wrong hint
+        const effectiveCount = isFullyDone ? completionCount : 0;
+        const nextBadge = badgeDefs.find(b => effectiveCount < b.threshold);
         const hintEl    = document.getElementById('badge-hint');
         if (!nextBadge) {
           hintEl.textContent = '🏆 All A320 achievement badges unlocked!';
-        } else if (completionCount === 0) {
+        } else if (effectiveCount === 0) {
           hintEl.textContent = '🔒 Complete the A320 lesson path to earn your first badge.';
         } else {
-          const needed = nextBadge.threshold - completionCount;
+          const needed = nextBadge.threshold - effectiveCount;
           const names  = { 'badge-bronze': 'Bronze', 'badge-silver': 'Silver', 'badge-gold': 'Gold', 'badge-platinum': 'Platinum' };
           hintEl.textContent = `🔒 Complete A320 ${needed} more time${needed > 1 ? 's' : ''} to unlock ${names[nextBadge.id]}.`;
         }
 
-        // Rank rows — update active state
-        if (completionCount >= 2) {
+        // Rank rows — only activate when full path earned
+        if (isFullyDone && completionCount >= 2) {
           document.getElementById('rank-copilot').className   = 'rank-row rank-row--active';
           document.getElementById('rank-copilot').querySelector('.rank-status').className = 'rank-status rank-status--active';
           document.getElementById('rank-copilot').querySelector('.rank-status').textContent = 'Active';
         }
-        if (completionCount >= 3) {
+        if (isFullyDone && completionCount >= 3) {
           document.getElementById('rank-pro').className       = 'rank-row rank-row--active';
           document.getElementById('rank-pro').querySelector('.rank-status').className = 'rank-status rank-status--active';
           document.getElementById('rank-pro').querySelector('.rank-status').textContent = 'Active';
         }
 
-        // Completion record
-        document.getElementById('comp-count').textContent = completionCount + '×';
+        // Completion record — only reflect earned completions
+        const displayCount = isFullyDone ? completionCount : 0;
+        document.getElementById('comp-count').textContent = displayCount + '×';
         const compSub = document.getElementById('comp-sub');
-        if (completionCount === 0) {
+        if (!isFullyDone || completionCount === 0) {
           compSub.textContent = 'Complete the A320 lesson path to earn your first badge.';
         } else {
-          const timesText  = completionCount === 1 ? 'once' : completionCount + ' times';
-          const badgeName  = completionCount >= 4 ? 'Platinum' : completionCount === 3 ? 'Gold' : completionCount === 2 ? 'Silver' : 'Bronze';
+          const timesText = completionCount === 1 ? 'once' : completionCount + ' times';
+          const badgeName = completionCount >= 4 ? 'Platinum' : completionCount === 3 ? 'Gold' : completionCount === 2 ? 'Silver' : 'Bronze';
           compSub.textContent = `Completed ${timesText} · ${badgeName} rank earned`;
         }
 
       } catch (err) {
         console.error('Profile load error:', err);
+        document.getElementById('profile-api-error').classList.remove('hidden');
       }
     }
 
