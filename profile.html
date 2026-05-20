@@ -162,7 +162,7 @@
             <p class="badge-desc">Complete A320 four times</p>
           </div>
         </div>
-        <p class="badge-hint" id="badge-hint">🔒 Complete the A320 lesson path to earn your first badge.</p>
+        <p class="badge-hint" id="badge-hint">Complete the full A320 path to unlock Bronze.</p>
       </div>
 
       <!-- ⑤ Display Title & Rank -->
@@ -438,7 +438,7 @@
           { id: 'badge-bronze',   threshold: 1 },
           { id: 'badge-silver',   threshold: 2 },
           { id: 'badge-gold',     threshold: 3 },
-          { id: 'badge-platinum', threshold: 4 }
+          { id: 'badge-platinum', threshold: 5 }
         ];
         badgeDefs.forEach(b => {
           const el = document.getElementById(b.id);
@@ -455,7 +455,7 @@
         if (!nextBadge) {
           hintEl.textContent = '🏆 All A320 achievement badges unlocked!';
         } else if (effectiveCount === 0) {
-          hintEl.textContent = '🔒 Complete the A320 lesson path to earn your first badge.';
+          hintEl.textContent = 'Complete the full A320 path to unlock Bronze.';
         } else {
           const needed = nextBadge.threshold - effectiveCount;
           const names  = { 'badge-bronze': 'Bronze', 'badge-silver': 'Silver', 'badge-gold': 'Gold', 'badge-platinum': 'Platinum' };
@@ -482,7 +482,7 @@
           compSub.textContent = 'Complete the A320 lesson path to earn your first badge.';
         } else {
           const timesText = completionCount === 1 ? 'once' : completionCount + ' times';
-          const badgeName = completionCount >= 4 ? 'Platinum' : completionCount === 3 ? 'Gold' : completionCount === 2 ? 'Silver' : 'Bronze';
+          const badgeName = completionCount >= 5 ? 'Platinum' : completionCount >= 3 ? 'Gold' : completionCount >= 2 ? 'Silver' : 'Bronze';
           compSub.textContent = `Completed ${timesText} · ${badgeName} rank earned`;
         }
 

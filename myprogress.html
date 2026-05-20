@@ -66,7 +66,7 @@
               <div class="pg-tag-row">
                 <span class="pg-tag pg-tag--aircraft">✈ Airbus A320</span>
                 <span class="pg-tag pg-tag--rank" id="rank-tag">★ Beginner Learner</span>
-                <span class="pg-tag pg-tag--saved">✓ Progress saved</span>
+                <span class="pg-tag pg-tag--status-notstarted" id="status-tag">Not Started</span>
               </div>
             </div>
           </div>
@@ -181,10 +181,10 @@
 
   <script>
     function getBadge(count) {
-      if (count >= 4) return { label: '★ Platinum',        cls: 'rank--platinum' };
-      if (count === 3) return { label: '★ Gold',           cls: 'rank--gold'     };
-      if (count === 2) return { label: '★ Silver',         cls: 'rank--silver'   };
-      if (count === 1) return { label: '★ Bronze',         cls: 'rank--bronze'   };
+      if (count >= 5) return { label: '★ Platinum',        cls: 'rank--platinum' };
+      if (count >= 3) return { label: '★ Gold',           cls: 'rank--gold'     };
+      if (count >= 2) return { label: '★ Silver',         cls: 'rank--silver'   };
+      if (count >= 1) return { label: '★ Bronze',         cls: 'rank--bronze'   };
       return              { label: '✈ Beginner Learner', cls: 'rank--beginner'  };
     }
 
@@ -237,6 +237,22 @@
         if      (progress.status === 'In Progress') statusEl.classList.add('pg-status--inprogress');
         else if (progress.status === 'Completed')   statusEl.classList.add('pg-status--completed');
         else                                        statusEl.classList.add('pg-status--notstarted');
+
+        // Progress status chip (learner card) — replaces the old static "Progress saved" chip
+        const statusTag = document.getElementById('status-tag');
+        let chipLabel, chipClass;
+        if (progress.status === 'Completed' || pct === 100) {
+          chipLabel = 'Completed';
+          chipClass = 'pg-tag--status-completed';
+        } else if (progress.status === 'In Progress' || (completedCount > 0 && pct < 100)) {
+          chipLabel = 'In Progress';
+          chipClass = 'pg-tag--status-inprogress';
+        } else {
+          chipLabel = 'Not Started';
+          chipClass = 'pg-tag--status-notstarted';
+        }
+        statusTag.textContent = chipLabel;
+        statusTag.className   = 'pg-tag ' + chipClass;
 
         // Times finished — only count if current run is fully done
         document.getElementById('stat-times').textContent     = isFullyDone ? completionCount + '×' : '0×';
@@ -320,12 +336,16 @@
 
         // Next badge hint
         const hintEl    = document.getElementById('record-hint');
-        const nextNames = { 0: 'Bronze', 1: 'Silver', 2: 'Gold', 3: 'Platinum' };
+        const badgeTiers = [
+          { name: 'Bronze', need: 1 }, { name: 'Silver', need: 2 },
+          { name: 'Gold',   need: 3 }, { name: 'Platinum', need: 5 }
+        ];
         const displayCount = isFullyDone ? completionCount : 0;
-        if (displayCount < 4) {
+        const nextTier  = badgeTiers.find(t => displayCount < t.need);
+        if (nextTier) {
           hintEl.textContent = displayCount === 0
-            ? '🏆 Complete the full A320 path to earn Bronze.'
-            : `🏆 Complete ${displayCount + 1}× to unlock ${nextNames[displayCount]} badge`;
+            ? 'Complete the full A320 path to unlock Bronze.'
+            : `🏆 Complete ${nextTier.need}× to unlock ${nextTier.name} badge`;
           hintEl.classList.remove('hidden');
         }
 

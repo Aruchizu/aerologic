@@ -293,6 +293,30 @@ body {
     border-radius: 5px;
 }
 
+/* Hero video frame — YouTube embed cropped to cover the 3:1 hero placeholder */
+.hero-video-frame {
+    width: 1320px;
+    max-width: 100%;
+    aspect-ratio: 3 / 1;
+    border-radius: 5px;
+    overflow: hidden;
+    background: #eef6ff;
+    position: relative;
+    pointer-events: none;
+}
+
+.hero-video-frame iframe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    transform: translate(-50%, -50%);
+    border: 0;
+    display: block;
+    pointer-events: none;
+}
+
 .hero-section {
     margin-top: 40px;
     text-align: center;
@@ -1992,6 +2016,9 @@ body {
 .pg-tag--rank.rank--gold      { background: rgba(217,119,6,0.1);  color: #b45309; border-color: rgba(217,119,6,0.25); }
 .pg-tag--rank.rank--platinum  { background: rgba(124,58,237,0.08); color: #5b21b6; border-color: rgba(124,58,237,0.2); }
 .pg-tag--saved      { background: rgba(22,163,74,0.08); color: #15803d; border-color: rgba(22,163,74,0.2); }
+.pg-tag--status-notstarted { background: rgba(82,101,122,0.1); color: var(--color-muted);   border-color: rgba(82,101,122,0.2); }
+.pg-tag--status-inprogress { background: rgba(31,92,255,0.08); color: var(--color-primary); border-color: rgba(31,92,255,0.2); }
+.pg-tag--status-completed  { background: rgba(22,163,74,0.1);  color: #16a34a;              border-color: rgba(22,163,74,0.2); }
 
 /* Stats 2×2 */
 .pg-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
