@@ -63,4 +63,24 @@ router.post('/complete', protect, async (req, res) => {
   }
 });
 
+// PUT /api/progress/me/reset — reset A320 progress (keep completionCount)
+router.put('/me/reset', protect, async (req, res) => {
+  try {
+    const progress = await Progress.findOne({ userId: req.user.id });
+    if (!progress) return res.status(404).json({ error: 'No progress found' });
+
+    progress.currentLessonKey   = 'aircraft-preparation';
+    progress.completedLessons   = [];
+    progress.progressPercentage = 0;
+    progress.status             = 'Not Started';
+    // Intentionally preserve progress.completionCount
+    progress.lastUpdated        = new Date();
+
+    await progress.save();
+    res.json(progress);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;

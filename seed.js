@@ -3,6 +3,7 @@ require('dotenv').config();
 
 const Aircraft = require('./models/Aircraft');
 const Lesson   = require('./models/Lesson');
+const Badge    = require('./models/Badge');
 
 const aircraft = [
   {
@@ -145,6 +146,13 @@ const lessons = [
   }
 ];
 
+const badges = [
+  { badgeCode: 'BRONZE_A320',   name: 'Bronze',   requiredCompletionCount: 1, description: 'Complete the A320 lesson path once.' },
+  { badgeCode: 'SILVER_A320',   name: 'Silver',   requiredCompletionCount: 2, description: 'Complete the A320 lesson path twice.' },
+  { badgeCode: 'GOLD_A320',     name: 'Gold',     requiredCompletionCount: 3, description: 'Complete the A320 lesson path three times.' },
+  { badgeCode: 'PLATINUM_A320', name: 'Platinum', requiredCompletionCount: 5, description: 'Complete the A320 lesson path five times.' }
+];
+
 mongoose.connect(process.env.MONGO_URI)
   .then(async () => {
     console.log('Connected to MongoDB');
@@ -158,6 +166,11 @@ mongoose.connect(process.env.MONGO_URI)
     await Lesson.deleteMany({ aircraftSlug: 'airbus-a320' });
     await Lesson.insertMany(lessons);
     console.log('Seeded', lessons.length, 'lessons');
+
+    // Seed badges
+    await Badge.deleteMany({});
+    await Badge.insertMany(badges);
+    console.log('Seeded', badges.length, 'badges');
 
     mongoose.disconnect();
     console.log('Done.');

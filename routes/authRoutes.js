@@ -23,8 +23,9 @@ router.post('/signup', async (req, res) => {
     if (await User.findOne({ email }))
       return res.status(400).json({ error: 'Email already in use' });
 
-    const hashed = await bcrypt.hash(password, 10);
-    const user = await User.create({ fullName, email, password: hashed });
+    const hashed   = await bcrypt.hash(password, 10);
+    const username = email.split('@')[0];
+    const user     = await User.create({ fullName, username, email, password: hashed });
 
     // Create default A320 progress record
     await Progress.create({
@@ -37,7 +38,10 @@ router.post('/signup', async (req, res) => {
       completionCount: 0
     });
 
-    res.status(201).json({ token: generateToken(user._id), user: { id: user._id, fullName, email } });
+    res.status(201).json({
+      token: generateToken(user._id),
+      user: { id: user._id, fullName, username, email, displayTitle: user.displayTitle }
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -52,12 +56,21 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ error: 'All fields are required' });
 
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ error: 'Invalid email or password' });
+    if (!user) return res.status(401).json({ error: 'Invalid email or password' });
 
     const match = await bcrypt.compare(password, user.password);
-    if (!match) return res.status(400).json({ error: 'Invalid email or password' });
+    if (!match) return res.status(401).json({ error: 'Invalid email or password' });
 
-    res.json({ token: generateToken(user._id), user: { id: user._id, fullName: user.fullName, email } });
+    res.json({
+      token: generateToken(user._id),
+      user: {
+        id:           user._id,
+        fullName:     user.fullName,
+        username:     user.username,
+        email:        user.email,
+        displayTitle: user.displayTitle
+      }
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

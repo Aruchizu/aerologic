@@ -10,9 +10,11 @@ app.use(express.json());
 app.use(express.static(__dirname));
 
 app.use('/api/auth',     require('./routes/authRoutes'));
+app.use('/api/users',    require('./routes/users'));
 app.use('/api/aircraft', require('./routes/aircraft'));
 app.use('/api/lessons',  require('./routes/lessons'));
 app.use('/api/progress', require('./routes/progress'));
+app.use('/api/search',   require('./routes/search'));
 
 connectDB().then(() => {
   app.listen(process.env.PORT || 3000, () => {

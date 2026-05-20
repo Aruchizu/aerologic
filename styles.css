@@ -1086,15 +1086,16 @@ body {
 }
 
 .resources-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
+    columns: 5 280px;
+    column-gap: 24px;
 }
 
 .resources-col {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    break-inside: avoid;
+    margin-bottom: 24px;
 }
 
 .resources-col-title {
@@ -1102,8 +1103,8 @@ body {
     font-size: 15px;
     font-weight: 700;
     color: var(--color-text);
-    margin: 0 0 4px 0;
-    text-align: center;
+    margin: 0;
+    text-align: left;
 }
 
 .resource-btn {
@@ -1123,6 +1124,45 @@ body {
 .resource-btn:hover {
     opacity: 0.85;
     transform: translateY(-2px);
+}
+
+/* ── Lesson Resources — resource items ── */
+.resource-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    background-color: var(--color-bg);
+}
+
+.resource-item-title {
+    margin: 0;
+    font-family: "LINE Seed JP", sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-text);
+}
+
+.resource-item-desc {
+    margin: 0;
+    font-family: "LINE Seed JP", sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--color-muted);
+}
+
+.resource-btn--disabled {
+    background-color: var(--color-border);
+    color: var(--color-muted);
+    cursor: not-allowed;
+}
+
+.resource-btn--disabled:hover {
+    opacity: 1;
+    transform: none;
 }
 
 /* ── Lesson Step View ─────────────────────────────────── */
@@ -2629,7 +2669,7 @@ body {
     .aircraft-grid        { grid-template-columns: 1fr; }
     .lesson-overview-card { grid-template-columns: 1fr; gap: 24px; }
     .lesson-main-heading  { font-size: 32px; }
-    .resources-grid       { grid-template-columns: 1fr; }
+    .resources-grid       { columns: 1; }
     .lesson-step-content  { grid-template-columns: 1fr; }
     .lesson-step-title    { font-size: 24px; }
 
@@ -2656,5 +2696,363 @@ body {
     .auth-card    { padding: 28px 20px; }
     .auth-heading { font-size: 26px; }
     .btn-auth     { width: 100%; }
+}
+
+/* ============================================================
+   LESSONS PAGE — SEARCH COMPONENT
+   ============================================================ */
+.search-section {
+    margin: -16px 0 32px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+    padding: 20px 22px;
+    box-shadow: 0 2px 10px rgba(21, 37, 54, 0.04);
+}
+.search-label {
+    display: block;
+    font-family: 'LINE Seed JP', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin: 0 0 10px;
+}
+.search-bar-row {
+    display: flex;
+    gap: 10px;
+    align-items: stretch;
+}
+.search-input {
+    flex: 1;
+    padding: 12px 14px;
+    border: 1.5px solid var(--color-border);
+    border-radius: 8px;
+    font-family: 'LINE Seed JP', sans-serif;
+    font-size: 15px;
+    color: var(--color-text);
+    background: #fff;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.search-input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(31, 92, 255, 0.12);
+}
+.search-btn {
+    padding: 12px 22px;
+    background: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-family: 'LINE Seed JP', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+}
+.search-btn:hover {
+    background: #1650e0;
+}
+.search-btn:active { transform: translateY(1px); }
+
+.search-results {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+.search-results.hidden { display: none; }
+.search-group-label {
+    font-family: 'LINE Seed JP', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin: 4px 0 -4px;
+}
+.search-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.search-result-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 16px;
+    background: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    transition: border-color 0.15s, background 0.15s;
+}
+.search-result-card:hover {
+    border-color: var(--color-primary);
+    background: rgba(31, 92, 255, 0.03);
+}
+.search-result-text {
+    flex: 1;
+    min-width: 0;
+}
+.search-result-title {
+    margin: 0 0 2px;
+    font-family: 'LINE Seed JP', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--color-text);
+}
+.search-result-sub {
+    margin: 0;
+    font-family: 'LINE Seed JP', sans-serif;
+    font-size: 13px;
+    color: var(--color-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.search-result-action {
+    flex-shrink: 0;
+    padding: 8px 14px;
+    background: var(--color-primary);
+    color: #fff;
+    border-radius: 6px;
+    font-family: 'LINE Seed JP', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.15s;
+}
+.search-result-action:hover { background: #1650e0; }
+.search-result-badge {
+    flex-shrink: 0;
+    padding: 6px 12px;
+    background: var(--color-border);
+    color: var(--color-muted);
+    border-radius: 6px;
+    font-family: 'LINE Seed JP', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+}
+.search-empty {
+    margin: 0;
+    padding: 12px 4px;
+    font-family: 'LINE Seed JP', sans-serif;
+    font-size: 14px;
+    color: var(--color-muted);
+    text-align: center;
+}
+
+@media (max-width: 480px) {
+    .search-section { padding: 16px 16px; }
+    .search-bar-row { flex-direction: column; }
+    .search-btn     { width: 100%; }
+    .search-result-card { flex-direction: column; align-items: flex-start; }
+    .search-result-action,
+    .search-result-badge { width: 100%; text-align: center; }
+}
+
+/* ============================================================
+   PROFILE PAGE — EDIT PROFILE FORM
+   ============================================================ */
+.edit-profile-block { margin-top: 18px; }
+
+.btn-edit-profile {
+    padding: 10px 20px;
+    background: transparent;
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+    border-radius: 8px;
+    font-family: 'LINE Seed JP', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+.btn-edit-profile:hover {
+    background: var(--color-primary);
+    color: #fff;
+}
+
+.edit-profile-form {
+    margin-top: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+.edit-profile-form.hidden { display: none; }
+
+.edit-form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.edit-form-label {
+    font-family: 'LINE Seed JP', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+}
+.edit-form-input {
+    padding: 12px 14px;
+    border: 1.5px solid var(--color-border);
+    border-radius: 8px;
+    font-family: 'LINE Seed JP', sans-serif;
+    font-size: 15px;
+    color: var(--color-text);
+    background: #fff;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+}
+.edit-form-input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(31, 92, 255, 0.12);
+}
+
+.edit-form-msg {
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-family: 'LINE Seed JP', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+}
+.edit-form-msg.hidden { display: none; }
+.edit-form-msg--success {
+    background: #e6f8ec;
+    color: #1a7a3c;
+    border: 1px solid #a8e6bf;
+}
+.edit-form-msg--error {
+    background: #fdecec;
+    color: #b8313a;
+    border: 1px solid #f3b7bb;
+}
+
+.edit-form-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.btn-save-profile {
+    padding: 11px 22px;
+    background: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-family: 'LINE Seed JP', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.btn-save-profile:hover { background: #1650e0; }
+.btn-save-profile:disabled {
+    background: var(--color-border);
+    color: var(--color-muted);
+    cursor: not-allowed;
+}
+.btn-cancel-profile {
+    padding: 11px 22px;
+    background: transparent;
+    color: var(--color-muted);
+    border: 1.5px solid var(--color-border);
+    border-radius: 8px;
+    font-family: 'LINE Seed JP', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+}
+.btn-cancel-profile:hover {
+    border-color: var(--color-muted);
+    color: var(--color-text);
+}
+
+/* ============================================================
+   PROFILE PAGE — DANGER ZONE
+   ============================================================ */
+.danger-zone {
+    border: 1px solid #f3b7bb;
+    background: #fffafa;
+}
+.danger-zone-label {
+    color: #b8313a !important;
+}
+.danger-zone-desc {
+    margin: 0 0 14px;
+    font-family: 'LINE Seed JP', sans-serif;
+    font-size: 14px;
+    color: var(--color-muted);
+}
+.btn-delete-account {
+    padding: 11px 22px;
+    background: transparent;
+    color: #b8313a;
+    border: 2px solid #d44a52;
+    border-radius: 8px;
+    font-family: 'LINE Seed JP', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+.btn-delete-account:hover {
+    background: #d44a52;
+    color: #fff;
+}
+
+/* ============================================================
+   MY PROGRESS — RESET BUTTON
+   ============================================================ */
+.pg-btn-reset {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 20px;
+    border: 2px solid var(--color-border);
+    color: var(--color-text);
+    background: transparent;
+    border-radius: 8px;
+    font-family: 'LINE Seed JP', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.pg-btn-reset:hover {
+    border-color: #d44a52;
+    color: #b8313a;
+    background: #fdecec;
+}
+.pg-btn-reset:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+.pg-reset-msg {
+    margin: 10px 0 0;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-family: 'LINE Seed JP', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+}
+.pg-reset-msg.hidden { display: none; }
+.pg-reset-msg--success {
+    background: #e6f8ec;
+    color: #1a7a3c;
+    border: 1px solid #a8e6bf;
+}
+.pg-reset-msg--error {
+    background: #fdecec;
+    color: #b8313a;
+    border: 1px solid #f3b7bb;
+}
+
+@media (max-width: 768px) {
+    .pg-btn-reset { justify-content: center; width: 100%; }
 }
 

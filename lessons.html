@@ -52,6 +52,15 @@
             <p class="lessons-subheading">Select an aircraft lesson path and begin learning the basic flow of a virtual flight through guided, beginner-friendly lessons.</p>
         </section>
 
+        <section class="search-section" aria-label="Search aircraft or lessons">
+            <label class="search-label" for="search-input">Search aircraft or lesson</label>
+            <div class="search-bar-row">
+                <input type="text" id="search-input" class="search-input" placeholder="Search Airbus A320, takeoff, cruise..." autocomplete="off">
+                <button type="button" id="search-btn" class="search-btn">Search</button>
+            </div>
+            <div class="search-results hidden" id="search-results"></div>
+        </section>
+
         <section class="aircraft-grid" id="aircraft-grid">
             <!-- filled by JS from /api/aircraft -->
         </section>
@@ -89,20 +98,62 @@
             <div class="resources-grid">
                 <div class="resources-col">
                     <h3 class="resources-col-title">Planning</h3>
-                    <a href="https://www.simbrief.com/home/" class="resource-btn" target="_blank" rel="noopener noreferrer">SimBrief</a>
-                    <a href="https://store.steampowered.com/app/269950/XPlane_11/" class="resource-btn" target="_blank" rel="noopener noreferrer">X-Plane 11 Steam</a>
-                    <a href="https://forums.x-plane.org/index.php?/files/file/37172-yet-another-nav-system-helper-yansh/" class="resource-btn" target="_blank" rel="noopener noreferrer">YANSH for XP11</a>
+                    <div class="resource-item">
+                        <p class="resource-item-title">SimBrief by Navigraph</p>
+                        <p class="resource-item-desc">Create beginner-friendly virtual flight plans and route briefings for simulator flights.</p>
+                        <a href="https://dispatch.simbrief.com" class="resource-btn" target="_blank" rel="noopener noreferrer">Open SimBrief</a>
+                    </div>
                 </div>
+
+                <div class="resources-col">
+                    <h3 class="resources-col-title">Simulator</h3>
+                    <div class="resource-item">
+                        <p class="resource-item-title">X-Plane 11 on Steam</p>
+                        <p class="resource-item-desc">Main simulator platform used as reference for AeroLogic's virtual flight procedures.</p>
+                        <a href="https://store.steampowered.com/app/269950/XPlane_11/" class="resource-btn" target="_blank" rel="noopener noreferrer">View on Steam</a>
+                    </div>
+                </div>
+
+                <div class="resources-col">
+                    <h3 class="resources-col-title">Navigation / Map Tools</h3>
+                    <div class="resource-item">
+                        <p class="resource-item-title">Little Navmap / Little Xpconnect</p>
+                        <p class="resource-item-desc">Little Xpconnect connects X-Plane with Little Navmap for live map and navigation support.</p>
+                        <a href="https://www.littlenavmap.org/manuals/littlenavmap/release/latest/en/XPCONNECT.html" class="resource-btn" target="_blank" rel="noopener noreferrer">View Little Navmap Guide</a>
+                    </div>
+                    <div class="resource-item">
+                        <p class="resource-item-title">YANSH for XP11</p>
+                        <p class="resource-item-desc">SimBrief helper utility for X-Plane that can pull flight plan/OFP data into the simulator environment.</p>
+                        <a href="https://forums.x-plane.org/files/file/86783-yansh-yet-another-simbrief-helper/" class="resource-btn" target="_blank" rel="noopener noreferrer">View YANSH</a>
+                    </div>
+                </div>
+
                 <div class="resources-col">
                     <h3 class="resources-col-title">Scenery</h3>
-                    <a href="https://forums.x-plane.org/index.php?/files/file/48770-airwil-rpve-ormoc-city-airport/" class="resource-btn" target="_blank" rel="noopener noreferrer">Airwil RPVE</a>
-                    <a href="https://store.x-plane.org/RPLL-Ninoy-Aquino-International-Airport_p_694.html" class="resource-btn" target="_blank" rel="noopener noreferrer">CloudSurf RPLL</a>
+                    <div class="resource-item">
+                        <p class="resource-item-title">Airwil RPVE</p>
+                        <p class="resource-item-desc">Boracay Caticlan Airport scenery reference for the RPVE virtual flight environment.</p>
+                        <a href="https://store.x-plane.org/RPVE--Boracay-Caticlan-Airport--Philippines-_p_1620.html" class="resource-btn" target="_blank" rel="noopener noreferrer">View Airwil RPVE</a>
+                    </div>
+                    <div class="resource-item">
+                        <p class="resource-item-title">CloudSurf Asia RPLL + Mega Manila</p>
+                        <p class="resource-item-desc">RPLL and Mega Manila scenery package for X-Plane 11/12.</p>
+                        <a href="https://cloudsurfasia-simulations.com/products/xp11-12/" class="resource-btn" target="_blank" rel="noopener noreferrer">View CloudSurf Asia</a>
+                    </div>
                 </div>
+
                 <div class="resources-col">
                     <h3 class="resources-col-title">Add-ons</h3>
-                    <a href="https://forums.x-plane.org/index.php?/files/file/32135-better-pushback/" class="resource-btn" target="_blank" rel="noopener noreferrer">Better Pushback</a>
-                    <a href="https://forums.x-plane.org/index.php?/files/file/34960-little-xpconnect/" class="resource-btn" target="_blank" rel="noopener noreferrer">Little XPconnect</a>
-                    <a href="https://tolisssimulations.com/index.php/products/a320/" class="resource-btn" target="_blank" rel="noopener noreferrer">Toliss A320</a>
+                    <div class="resource-item">
+                        <p class="resource-item-title">Better Pushback</p>
+                        <p class="resource-item-desc">Ground pushback plugin used to support realistic gate departure procedures in X-Plane.</p>
+                        <a href="https://github.com/skiselkov/BetterPushbackC/releases" class="resource-btn" target="_blank" rel="noopener noreferrer">View Better Pushback</a>
+                    </div>
+                    <div class="resource-item">
+                        <p class="resource-item-title">ToLiss A320neo</p>
+                        <p class="resource-item-desc">Airbus A320neo aircraft add-on for X-Plane 11/12 used as the aircraft reference for AeroLogic's A320 lesson flow.</p>
+                        <a href="https://toliss.com/pages/a320-neo" class="resource-btn" target="_blank" rel="noopener noreferrer">View ToLiss A320neo</a>
+                    </div>
                 </div>
             </div>
         </section>
@@ -365,6 +416,103 @@
                 alert('Could not save progress. Make sure you are logged in.');
             }
         });
+
+        // ── Search aircraft + lessons ──
+        const searchInput   = document.getElementById('search-input');
+        const searchBtn     = document.getElementById('search-btn');
+        const searchResults = document.getElementById('search-results');
+
+        function escapeHtml(str) {
+            return String(str || '').replace(/[&<>"']/g, c => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            }[c]));
+        }
+
+        async function runSearch() {
+            const q = searchInput.value.trim();
+            try {
+                const url = q ? `/api/search?q=${encodeURIComponent(q)}` : '/api/search';
+                const res = await fetch(url);
+                if (!res.ok) throw new Error('Search failed');
+                const data = await res.json();
+                renderSearchResults(data, q);
+            } catch (err) {
+                searchResults.classList.remove('hidden');
+                searchResults.innerHTML = `<p class="search-empty">Could not load search results. Please try again.</p>`;
+            }
+        }
+
+        function renderSearchResults(data, q) {
+            const { aircraft = [], lessons = [] } = data || {};
+
+            // Hide block when there's no query and no results to summarize
+            if (!q && aircraft.length === 0 && lessons.length === 0) {
+                searchResults.classList.add('hidden');
+                searchResults.innerHTML = '';
+                return;
+            }
+
+            if (q && aircraft.length === 0 && lessons.length === 0) {
+                searchResults.classList.remove('hidden');
+                searchResults.innerHTML = `<p class="search-empty">No matching lesson or aircraft found.</p>`;
+                return;
+            }
+
+            let html = '';
+
+            if (aircraft.length > 0) {
+                html += `<p class="search-group-label">Aircraft</p>`;
+                html += `<div class="search-group">` + aircraft.map(a => {
+                    const isAvailable = a.status === 'available';
+                    const action = isAvailable
+                        ? `<a href="#${escapeHtml(a.slug)}" class="search-result-action">Open →</a>`
+                        : `<span class="search-result-badge">Coming Soon</span>`;
+                    return `
+                        <div class="search-result-card">
+                            <div class="search-result-text">
+                                <p class="search-result-title">${escapeHtml(a.name)}</p>
+                                <p class="search-result-sub">${escapeHtml(a.description || (isAvailable ? 'Available now' : 'Coming soon'))}</p>
+                            </div>
+                            ${action}
+                        </div>`;
+                }).join('') + `</div>`;
+            }
+
+            if (lessons.length > 0) {
+                html += `<p class="search-group-label">Lessons</p>`;
+                html += `<div class="search-group">` + lessons.map(l => {
+                    const stepNum = l.order || 1;
+                    return `
+                        <div class="search-result-card">
+                            <div class="search-result-text">
+                                <p class="search-result-title">${escapeHtml(l.title)}</p>
+                                <p class="search-result-sub">${escapeHtml(l.description || 'Lesson')}</p>
+                            </div>
+                            <a href="#${escapeHtml(l.aircraftSlug)}-step${stepNum}" class="search-result-action">Open →</a>
+                        </div>`;
+                }).join('') + `</div>`;
+            }
+
+            searchResults.classList.remove('hidden');
+            searchResults.innerHTML = html;
+        }
+
+        if (searchBtn && searchInput) {
+            searchBtn.addEventListener('click', runSearch);
+            searchInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    runSearch();
+                }
+            });
+            // Clear results when the field is emptied
+            searchInput.addEventListener('input', () => {
+                if (!searchInput.value.trim()) {
+                    searchResults.classList.add('hidden');
+                    searchResults.innerHTML = '';
+                }
+            });
+        }
 
         handleHash();
         window.addEventListener('hashchange', handleHash);
