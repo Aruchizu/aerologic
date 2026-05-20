@@ -55,7 +55,7 @@
             </div>
             <div class="profile-meta-item">
               <span class="meta-label">MEMBER SINCE</span>
-              <span class="meta-val" id="meta-since">May 2025</span>
+              <span class="meta-val" id="meta-since">—</span>
             </div>
             <div class="profile-meta-item">
               <span class="meta-label">AIRCRAFT</span>
@@ -74,16 +74,48 @@
           <span class="account-info-val" id="info-fullname">—</span>
         </div>
         <div class="account-info-row">
+          <span class="account-info-key">Username</span>
+          <span class="account-info-val" id="info-username">—</span>
+        </div>
+        <div class="account-info-row">
+          <span class="account-info-key">Display title</span>
+          <span class="account-info-val" id="info-displaytitle">Beginner Learner</span>
+        </div>
+        <div class="account-info-row">
           <span class="account-info-key">Email address</span>
           <span class="account-info-val" id="info-email">—</span>
         </div>
         <div class="account-info-row">
           <span class="account-info-key">Account created</span>
-          <span class="account-info-val" id="info-created">May 2025</span>
+          <span class="account-info-val" id="info-created">—</span>
         </div>
         <div class="account-info-row">
           <span class="account-info-key">Learning status</span>
           <span class="status-pill status-pill--inprogress" id="info-status">Not Started</span>
+        </div>
+
+        <!-- Edit Profile inline form -->
+        <div class="edit-profile-block">
+          <button type="button" class="btn-edit-profile" id="btn-edit-profile">✎ Edit Profile</button>
+          <form class="edit-profile-form hidden" id="edit-profile-form" novalidate>
+            <div class="edit-form-field">
+              <label class="edit-form-label" for="edit-username">Username</label>
+              <input type="text" class="edit-form-input" id="edit-username" maxlength="40" required>
+            </div>
+            <div class="edit-form-field">
+              <label class="edit-form-label" for="edit-displayTitle">Display Title</label>
+              <select class="edit-form-input" id="edit-displayTitle">
+                <option value="Beginner Learner">Beginner Learner</option>
+                <option value="A320 Learner">A320 Learner</option>
+                <option value="A320 Pro">A320 Pro</option>
+              </select>
+            </div>
+            <div class="edit-form-msg hidden" id="edit-form-msg"></div>
+            <div class="edit-form-buttons">
+              <button type="submit" class="btn-save-profile" id="btn-save-profile">Save Changes</button>
+              <button type="button" class="btn-cancel-profile" id="btn-cancel-profile">Cancel</button>
+            </div>
+          </form>
         </div>
       </div>
 
@@ -163,6 +195,13 @@
         </div>
       </div>
 
+      <!-- ⑦ Danger Zone -->
+      <div class="profile-section-card danger-zone">
+        <p class="profile-card-label danger-zone-label">DANGER ZONE</p>
+        <p class="danger-zone-desc">Deleting your account permanently removes your profile and all saved progress. This cannot be undone.</p>
+        <button type="button" class="btn-delete-account" id="btn-delete-account">Delete Account</button>
+      </div>
+
     </div>
   </div>
 
@@ -216,6 +255,8 @@
       document.getElementById('profile-name').textContent        = displayName;
       document.getElementById('profile-email-display').textContent = user.email;
       document.getElementById('info-fullname').textContent       = displayName;
+      document.getElementById('info-username').textContent       = user.username || '—';
+      document.getElementById('info-displaytitle').textContent   = user.displayTitle || 'Beginner Learner';
       document.getElementById('info-email').textContent          = user.email;
       document.getElementById('meta-id').textContent             = '#' + (user.id || '').slice(-4).toUpperCase();
 
@@ -224,6 +265,117 @@
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         window.location.href = 'index.html';
+      });
+
+      // ── Edit Profile form ──
+      const editBtn    = document.getElementById('btn-edit-profile');
+      const editForm   = document.getElementById('edit-profile-form');
+      const editUser   = document.getElementById('edit-username');
+      const editTitle  = document.getElementById('edit-displayTitle');
+      const editMsg    = document.getElementById('edit-form-msg');
+      const cancelBtn  = document.getElementById('btn-cancel-profile');
+      const saveBtn    = document.getElementById('btn-save-profile');
+
+      function fillEditFormFromState() {
+        editUser.value  = user.username || '';
+        editTitle.value = user.displayTitle || 'Beginner Learner';
+        editMsg.classList.add('hidden');
+        editMsg.textContent = '';
+      }
+
+      editBtn.addEventListener('click', () => {
+        fillEditFormFromState();
+        editForm.classList.remove('hidden');
+        editBtn.classList.add('hidden');
+      });
+
+      cancelBtn.addEventListener('click', () => {
+        editForm.classList.add('hidden');
+        editBtn.classList.remove('hidden');
+        fillEditFormFromState();
+      });
+
+      editForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        editMsg.classList.add('hidden');
+        const username     = editUser.value.trim();
+        const displayTitle = editTitle.value;
+
+        if (!username) {
+          editMsg.textContent = 'Username cannot be empty.';
+          editMsg.className   = 'edit-form-msg edit-form-msg--error';
+          editMsg.classList.remove('hidden');
+          return;
+        }
+
+        saveBtn.textContent = 'Saving...';
+        saveBtn.disabled    = true;
+
+        try {
+          const res = await fetch('/api/users/me', {
+            method: 'PUT',
+            headers: {
+              'Content-Type':  'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ username, displayTitle })
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Update failed');
+
+          // Update localStorage user object so navbar/profile stay in sync
+          user.username     = data.username;
+          user.displayTitle = data.displayTitle;
+          localStorage.setItem('user', JSON.stringify(user));
+
+          document.getElementById('info-username').textContent     = data.username || '—';
+          document.getElementById('info-displaytitle').textContent = data.displayTitle || 'Beginner Learner';
+
+          editMsg.textContent = 'Profile updated successfully.';
+          editMsg.className   = 'edit-form-msg edit-form-msg--success';
+          editMsg.classList.remove('hidden');
+
+          setTimeout(() => {
+            editForm.classList.add('hidden');
+            editBtn.classList.remove('hidden');
+          }, 900);
+        } catch (err) {
+          editMsg.textContent = err.message || 'Could not save profile.';
+          editMsg.className   = 'edit-form-msg edit-form-msg--error';
+          editMsg.classList.remove('hidden');
+        } finally {
+          saveBtn.textContent = 'Save Changes';
+          saveBtn.disabled    = false;
+        }
+      });
+
+      // ── Delete Account (Danger Zone) ──
+      document.getElementById('btn-delete-account').addEventListener('click', async () => {
+        const typed = window.prompt(
+          'This will permanently delete your account and all saved progress. Type DELETE to confirm.'
+        );
+        if (typed !== 'DELETE') {
+          if (typed !== null) {
+            window.alert('Account NOT deleted. You must type DELETE exactly to confirm.');
+          }
+          return;
+        }
+        try {
+          const res = await fetch('/api/users/me', {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          if (!res.ok) {
+            const data = await res.json().catch(() => ({}));
+            throw new Error(data.error || 'Delete failed');
+          }
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          window.alert('Your account has been deleted.');
+          window.location.href = 'index.html';
+        } catch (err) {
+          window.alert('Could not delete account: ' + err.message);
+        }
       });
 
       try {

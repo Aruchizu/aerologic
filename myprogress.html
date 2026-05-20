@@ -119,7 +119,9 @@
           <div class="pg-aircraft-btns">
             <a href="lessons.html#airbus-a320-step1" class="pg-btn-continue" id="continue-btn">▶ Start Lesson</a>
             <a href="lessons.html#airbus-a320" class="pg-btn-secondary">View Lessons</a>
+            <button type="button" class="pg-btn-reset" id="btn-reset-progress">↺ Reset A320 Progress</button>
           </div>
+          <p class="pg-reset-msg hidden" id="reset-msg"></p>
         </div>
 
         <div class="pg-right-col">
@@ -215,11 +217,12 @@
         const progress = await progRes.json();
         const lessons  = lessonsRes.ok ? await lessonsRes.json() : [];
 
-        const pct             = progress.progressPercentage || 0;
-        const completedCount  = progress.completedLessons.length;
-        const completionCount = progress.completionCount || 0;
-        const totalLessons    = lessons.length || 7;
-        const isFullyDone     = completedCount >= totalLessons;
+        const completedLessons = progress.completedLessons || [];
+        const pct              = progress.progressPercentage || 0;
+        const completedCount   = completedLessons.length;
+        const completionCount  = progress.completionCount || 0;
+        const totalLessons     = lessons.length || 7;
+        const isFullyDone      = completedCount >= totalLessons;
 
         // Stat cards
         document.getElementById('stat-pct').textContent       = pct + '%';
@@ -263,7 +266,7 @@
         // Lesson list — pulled from MongoDB via /api/lessons
         const listEl = document.getElementById('lesson-list');
         listEl.innerHTML = lessons.map(l => {
-          const isDone    = progress.completedLessons.includes(l.lessonKey);
+          const isDone    = completedLessons.includes(l.lessonKey);
           const isCurrent = l.lessonKey === progress.currentLessonKey && !isDone;
 
           if (isDone) return `
@@ -350,6 +353,50 @@
       }
     }
 
+    // ── Reset A320 Progress ──
+    function setupResetButton() {
+      const resetBtn = document.getElementById('btn-reset-progress');
+      const resetMsg = document.getElementById('reset-msg');
+      if (!resetBtn) return;
+
+      resetBtn.addEventListener('click', async () => {
+        const token = localStorage.getItem('token');
+        if (!token) return;
+
+        const ok = window.confirm(
+          'Are you sure you want to reset your A320 lesson progress? Your account will remain active.'
+        );
+        if (!ok) return;
+
+        resetBtn.disabled    = true;
+        resetBtn.textContent = 'Resetting...';
+
+        try {
+          const res = await fetch('/api/progress/me/reset', {
+            method: 'PUT',
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          if (!res.ok) {
+            const data = await res.json().catch(() => ({}));
+            throw new Error(data.error || 'Reset failed');
+          }
+          resetMsg.textContent = 'Progress reset. Refreshing your dashboard...';
+          resetMsg.className   = 'pg-reset-msg pg-reset-msg--success';
+          resetMsg.classList.remove('hidden');
+          await loadProgress();
+        } catch (err) {
+          resetMsg.textContent = err.message || 'Could not reset progress.';
+          resetMsg.className   = 'pg-reset-msg pg-reset-msg--error';
+          resetMsg.classList.remove('hidden');
+        } finally {
+          resetBtn.disabled    = false;
+          resetBtn.textContent = '↺ Reset A320 Progress';
+          setTimeout(() => resetMsg.classList.add('hidden'), 3500);
+        }
+      });
+    }
+
+    setupResetButton();
     loadProgress();
   </script>
   <script src="navbar.js"></script>
