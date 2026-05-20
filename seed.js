@@ -11,7 +11,7 @@ const aircraft = [
     slug: 'airbus-a320',
     status: 'available',
     description: 'Learn the basic virtual flight flow of the Airbus A320, from aircraft preparation to landing.',
-    imagePath: 'assets/logo-blue.png',
+    imagePath: 'assets/a320-lesson-cover.jpg',
     order: 1
   },
   {
