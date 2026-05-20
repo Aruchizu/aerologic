@@ -316,6 +316,14 @@ body {
     pointer-events: none;
 }
 
+/* Hero video — taller frame on smaller screens so the clip is not over-cropped */
+@media (max-width: 768px) {
+    .hero-video-frame { aspect-ratio: 2 / 1; }
+}
+@media (max-width: 480px) {
+    .hero-video-frame { aspect-ratio: 16 / 9; }
+}
+
 .hero-section {
     margin-top: 40px;
     text-align: center;
