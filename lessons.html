@@ -182,12 +182,8 @@
             <div class="lesson-step-right">
                 <p class="lesson-video-label">Lesson Video</p>
                 <h3 class="lesson-video-title" id="step-video-title"></h3>
-                <div class="lesson-video-placeholder">
-                    <div class="play-btn-circle">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="var(--color-primary)">
-                            <polygon points="5,3 19,12 5,21"/>
-                        </svg>
-                    </div>
+                <div class="lesson-video-slot" id="lesson-video-slot">
+                    <!-- External tutorial reference video — filled by JS per lesson -->
                 </div>
             </div>
         </div>
@@ -228,6 +224,72 @@
 
         let allLessons  = [];
         let allAircraft = [];
+
+        // ── External tutorial reference videos (YouTube) ──
+        // These are EXTERNAL learning references, not AeroLogic-owned videos.
+        // Frontend-only mapping keyed by lesson key — no backend/database change.
+        const LESSON_VIDEOS = {
+            'aircraft-preparation': { embed: 'https://www.youtube.com/embed/EUM6tRIrrsA' },
+            'flight-planning':      { embed: 'https://www.youtube.com/embed/ry98uMoxg3c' },
+            // Taxiing — startup/taxi video trimmed to END at 17:00 (1020s)
+            'taxiing':              { embed: 'https://www.youtube.com/embed/9hihRSbG9VE?end=1020' },
+            // Takeoff — same video, STARTING at 17:00 (1020s)
+            'takeoff':              { embed: 'https://www.youtube.com/embed/9hihRSbG9VE?start=1020' },
+            'cruise':               { embed: 'https://www.youtube.com/embed/0PfF49qlHL8' },
+            // Approach & Landing — approach video as main embed, landing as a secondary link
+            'approach-and-landing': {
+                embed:          'https://www.youtube.com/embed/66_Q0LeNlS4',
+                secondaryLabel: 'Watch landing reference on YouTube',
+                secondaryUrl:   'https://www.youtube.com/watch?v=rIcPG0wQqtQ'
+            },
+            'shutdown':             { embed: 'https://www.youtube.com/embed/414mpxFyZVU' }
+        };
+
+        // Render the external tutorial reference video for a lesson step
+        function renderLessonVideo(lesson) {
+            const slot = document.getElementById('lesson-video-slot');
+            if (!slot) return;
+
+            const video = LESSON_VIDEOS[lesson.lessonKey];
+
+            // No video mapped — show coming-soon fallback
+            if (!video || !video.embed) {
+                slot.innerHTML = `
+                    <div class="lesson-video-soon">
+                        <p class="lesson-video-soon-title">Video guide coming soon.</p>
+                        <p class="lesson-video-soon-sub">Follow the checklist below for now.</p>
+                    </div>`;
+                return;
+            }
+
+            const refTitle = escapeHtml('External tutorial reference for ' + lesson.title);
+
+            let html = `
+                <div class="external-ref-note">
+                    <span class="external-ref-badge">External Tutorial Reference</span>
+                    <p class="external-ref-text">This video is provided as an external learning reference for flight simulator users.</p>
+                    <p class="external-ref-source">Source: YouTube / Pilot mentor playlist</p>
+                </div>
+                <div class="lesson-video-embed">
+                    <iframe
+                        src="${video.embed}"
+                        title="${refTitle}"
+                        loading="lazy"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen></iframe>
+                </div>`;
+
+            if (video.secondaryUrl) {
+                html += `
+                <a class="lesson-video-secondary-link"
+                   href="${video.secondaryUrl}"
+                   target="_blank" rel="noopener noreferrer">
+                    ${escapeHtml(video.secondaryLabel || 'Watch on YouTube')} ↗
+                </a>`;
+            }
+
+            slot.innerHTML = html;
+        }
 
         async function fetchLessons() {
             if (allLessons.length > 0) return allLessons;
@@ -328,6 +390,9 @@
             document.getElementById('step-title').textContent      = lesson.title;
             document.getElementById('step-video-title').textContent = lesson.title;
             document.getElementById('checklist-heading').textContent = lesson.title + ' Checklist';
+
+            // External tutorial reference video for this lesson step
+            renderLessonVideo(lesson);
 
             const checklistEl = document.getElementById('step-checklist');
             checklistEl.innerHTML = lesson.checklist.map(item => `
