@@ -1008,7 +1008,7 @@ body {
     border-radius: 16px;
     padding: 32px;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 40px;
     align-items: center;
     margin-bottom: 40px;
@@ -1067,34 +1067,6 @@ body {
     background-color: var(--color-primary);
     color: #ffffff;
     transform: translateY(-2px);
-}
-
-.lesson-overview-right {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.lesson-video-placeholder {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    border: 2px solid var(--color-primary);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--color-bg);
-}
-
-.play-btn-circle {
-    width: 64px;
-    height: 64px;
-    border: 2px solid var(--color-primary);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-left: 4px;
 }
 
 /* ── Lesson Resources ─────────────────────────────────── */
