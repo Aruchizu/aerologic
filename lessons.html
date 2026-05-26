@@ -265,6 +265,7 @@
 
             const videoTitle = escapeHtml('AeroLogic lesson video for ' + lesson.title);
             const infoAlt = escapeHtml(lesson.title + ' visual lesson guide');
+            const videoDisclaimer = 'Tutorial video recorded in X-Plane 11 using the ToLiss A320 add-on. X-Plane 11, ToLiss A320, and related add-on assets belong to their respective owners.';
             const infoHtml = media.infoImage ? `
                 <div class="lesson-info-card">
                     <p class="lesson-info-label">Additional Info</p>
@@ -282,7 +283,8 @@
                         <source src="${media.videoSrc}" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
-                </div>${infoHtml}`;
+                </div>
+                <p class="lesson-video-disclaimer">${videoDisclaimer}</p>${infoHtml}`;
         }
 
         async function fetchLessons() {

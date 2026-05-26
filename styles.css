@@ -3169,6 +3169,14 @@ body {
     background: #000000;
 }
 
+.lesson-video-disclaimer {
+    font-family: "LINE Seed JP", sans-serif;
+    font-size: 12px;
+    color: var(--color-muted);
+    line-height: 1.5;
+    margin: 10px 0 0;
+}
+
 .lesson-info-card {
     margin-top: 18px;
 }
