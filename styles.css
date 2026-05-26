@@ -3138,7 +3138,7 @@ body {
     margin: 0;
 }
 
-/* Responsive 16:9 YouTube embed */
+/* Responsive 16:9 lesson video */
 .lesson-video-embed {
     width: 100%;
     max-width: 100%;
@@ -3148,11 +3148,17 @@ body {
     overflow: hidden;
     background: #000000;
 }
-.lesson-video-embed iframe {
+.lesson-video-embed iframe,
+.lesson-video-embed video {
     width: 100%;
     height: 100%;
     border: 0;
     display: block;
+}
+
+.lesson-video-embed video {
+    object-fit: contain;
+    background: #000000;
 }
 
 /* Secondary "watch on YouTube" link (e.g. landing reference) */

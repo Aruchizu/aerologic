@@ -174,7 +174,7 @@
                 <p class="lesson-video-label">Lesson Video</p>
                 <h3 class="lesson-video-title" id="step-video-title"></h3>
                 <div class="lesson-video-slot" id="lesson-video-slot">
-                    <!-- External tutorial reference video — filled by JS per lesson -->
+                    <!-- Lesson video — filled by JS per lesson -->
                 </div>
             </div>
         </div>
@@ -216,35 +216,24 @@
         let allLessons  = [];
         let allAircraft = [];
 
-        // ── External tutorial reference videos (YouTube) ──
-        // These are EXTERNAL learning references, not AeroLogic-owned videos.
-        // Frontend-only mapping keyed by lesson key — no backend/database change.
+        // Frontend-only lesson video mapping keyed by lesson key.
         const LESSON_VIDEOS = {
-            'aircraft-preparation': { embed: 'https://www.youtube.com/embed/EUM6tRIrrsA' },
-            'flight-planning':      { embed: 'https://www.youtube.com/embed/ry98uMoxg3c' },
-            // Taxiing — startup/taxi video trimmed to END at 17:00 (1020s)
-            'taxiing':              { embed: 'https://www.youtube.com/embed/9hihRSbG9VE?end=1020' },
-            // Takeoff — same video, STARTING at 17:00 (1020s)
-            'takeoff':              { embed: 'https://www.youtube.com/embed/9hihRSbG9VE?start=1020' },
-            'cruise':               { embed: 'https://www.youtube.com/embed/0PfF49qlHL8' },
-            // Approach & Landing — approach video as main embed, landing as a secondary link
-            'approach-and-landing': {
-                embed:          'https://www.youtube.com/embed/66_Q0LeNlS4',
-                secondaryLabel: 'Watch landing reference on YouTube',
-                secondaryUrl:   'https://www.youtube.com/watch?v=rIcPG0wQqtQ'
-            },
-            'shutdown':             { embed: 'https://www.youtube.com/embed/414mpxFyZVU' }
+            'aircraft-preparation': { src: 'video-asset/lessons/01-aircraft-preparation.mp4' },
+            'flight-planning':      { src: 'video-asset/lessons/02-flight-planning.mp4' },
+            'taxiing':              { src: 'video-asset/lessons/03-taxiing.mp4' },
+            'takeoff':              { src: 'video-asset/lessons/04-take-off.mp4' },
+            'cruise':               { src: 'video-asset/lessons/05-cruise.mp4' },
+            'shutdown':             { src: 'video-asset/lessons/06-shutdown.mp4' }
         };
 
-        // Render the external tutorial reference video for a lesson step
+        // Render the local lesson video for a lesson step.
         function renderLessonVideo(lesson) {
             const slot = document.getElementById('lesson-video-slot');
             if (!slot) return;
 
             const video = LESSON_VIDEOS[lesson.lessonKey];
 
-            // No video mapped — show coming-soon fallback
-            if (!video || !video.embed) {
+            if (!video || !video.src) {
                 slot.innerHTML = `
                     <div class="lesson-video-soon">
                         <p class="lesson-video-soon-title">Video guide coming soon.</p>
@@ -253,33 +242,20 @@
                 return;
             }
 
-            const refTitle = escapeHtml('External tutorial reference for ' + lesson.title);
+            const videoTitle = escapeHtml('AeroLogic lesson video for ' + lesson.title);
 
-            let html = `
+            slot.innerHTML = `
                 <div class="external-ref-note">
-                    <span class="external-ref-badge">External Tutorial Reference</span>
-                    <p class="external-ref-text">This video is provided as an external learning reference for flight simulator users.</p>
-                    <p class="external-ref-source">Source: YouTube / Pilot mentor playlist</p>
+                    <span class="external-ref-badge">AeroLogic Lesson Video</span>
+                    <p class="external-ref-text">Watch the step walkthrough, then use the checklist below as your practice guide.</p>
+                    <p class="external-ref-source">Source: AeroLogic lesson media</p>
                 </div>
                 <div class="lesson-video-embed">
-                    <iframe
-                        src="${video.embed}"
-                        title="${refTitle}"
-                        loading="lazy"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen></iframe>
+                    <video controls preload="metadata" title="${videoTitle}">
+                        <source src="${video.src}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
                 </div>`;
-
-            if (video.secondaryUrl) {
-                html += `
-                <a class="lesson-video-secondary-link"
-                   href="${video.secondaryUrl}"
-                   target="_blank" rel="noopener noreferrer">
-                    ${escapeHtml(video.secondaryLabel || 'Watch on YouTube')} ↗
-                </a>`;
-            }
-
-            slot.innerHTML = html;
         }
 
         async function fetchLessons() {
@@ -382,7 +358,7 @@
             document.getElementById('step-video-title').textContent = lesson.title;
             document.getElementById('checklist-heading').textContent = lesson.title + ' Checklist';
 
-            // External tutorial reference video for this lesson step
+            // Lesson video for this lesson step
             renderLessonVideo(lesson);
 
             const checklistEl = document.getElementById('step-checklist');
