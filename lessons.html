@@ -238,6 +238,9 @@
                 videoSrc: 'video-asset/lessons/05-cruise.mp4',
                 infoImage: 'assets/lesson-info/05-cruise.png'
             },
+            'approach-and-landing': {
+                videoSrc: 'video-asset/lessons/06-approach-and-landing.mp4'
+            },
             'shutdown': {
                 videoSrc: 'video-asset/lessons/06-shutdown.mp4',
                 infoImage: 'assets/lesson-info/06-shutdown.png'
@@ -262,6 +265,11 @@
 
             const videoTitle = escapeHtml('AeroLogic lesson video for ' + lesson.title);
             const infoAlt = escapeHtml(lesson.title + ' visual lesson guide');
+            const infoHtml = media.infoImage ? `
+                <div class="lesson-info-card">
+                    <p class="lesson-info-label">Additional Info</p>
+                    <img src="${media.infoImage}" alt="${infoAlt}" class="lesson-info-image">
+                </div>` : '';
 
             slot.innerHTML = `
                 <div class="external-ref-note">
@@ -274,11 +282,7 @@
                         <source src="${media.videoSrc}" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
-                </div>
-                <div class="lesson-info-card">
-                    <p class="lesson-info-label">Additional Info</p>
-                    <img src="${media.infoImage}" alt="${infoAlt}" class="lesson-info-image">
-                </div>`;
+                </div>${infoHtml}`;
         }
 
         async function fetchLessons() {
