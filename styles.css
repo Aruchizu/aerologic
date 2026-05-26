@@ -3161,6 +3161,30 @@ body {
     background: #000000;
 }
 
+.lesson-info-card {
+    margin-top: 18px;
+}
+
+.lesson-info-label {
+    font-family: "LINE Seed JP", sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-primary);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin: 0 0 10px;
+}
+
+.lesson-info-image {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border: 2px solid var(--color-border);
+    border-radius: 12px;
+    background: var(--color-bg);
+}
+
 /* Secondary "watch on YouTube" link (e.g. landing reference) */
 .lesson-video-secondary-link {
     display: inline-block;

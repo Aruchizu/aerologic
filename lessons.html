@@ -216,24 +216,42 @@
         let allLessons  = [];
         let allAircraft = [];
 
-        // Frontend-only lesson video mapping keyed by lesson key.
-        const LESSON_VIDEOS = {
-            'aircraft-preparation': { src: 'video-asset/lessons/01-aircraft-preparation.mp4' },
-            'flight-planning':      { src: 'video-asset/lessons/02-flight-planning.mp4' },
-            'taxiing':              { src: 'video-asset/lessons/03-taxiing.mp4' },
-            'takeoff':              { src: 'video-asset/lessons/04-take-off.mp4' },
-            'cruise':               { src: 'video-asset/lessons/05-cruise.mp4' },
-            'shutdown':             { src: 'video-asset/lessons/06-shutdown.mp4' }
+        // Frontend-only lesson media mapping keyed by lesson key.
+        const LESSON_MEDIA = {
+            'aircraft-preparation': {
+                videoSrc: 'video-asset/lessons/01-aircraft-preparation.mp4',
+                infoImage: 'assets/lesson-info/01-aircraft-preparation.png'
+            },
+            'flight-planning': {
+                videoSrc: 'video-asset/lessons/02-flight-planning.mp4',
+                infoImage: 'assets/lesson-info/02-flight-planning.png'
+            },
+            'taxiing': {
+                videoSrc: 'video-asset/lessons/03-taxiing.mp4',
+                infoImage: 'assets/lesson-info/03-taxiing.png'
+            },
+            'takeoff': {
+                videoSrc: 'video-asset/lessons/04-take-off.mp4',
+                infoImage: 'assets/lesson-info/04-take-off.png'
+            },
+            'cruise': {
+                videoSrc: 'video-asset/lessons/05-cruise.mp4',
+                infoImage: 'assets/lesson-info/05-cruise.png'
+            },
+            'shutdown': {
+                videoSrc: 'video-asset/lessons/06-shutdown.mp4',
+                infoImage: 'assets/lesson-info/06-shutdown.png'
+            }
         };
 
-        // Render the local lesson video for a lesson step.
-        function renderLessonVideo(lesson) {
+        // Render the local lesson video and matching visual guide for a lesson step.
+        function renderLessonMedia(lesson) {
             const slot = document.getElementById('lesson-video-slot');
             if (!slot) return;
 
-            const video = LESSON_VIDEOS[lesson.lessonKey];
+            const media = LESSON_MEDIA[lesson.lessonKey];
 
-            if (!video || !video.src) {
+            if (!media || !media.videoSrc) {
                 slot.innerHTML = `
                     <div class="lesson-video-soon">
                         <p class="lesson-video-soon-title">Video guide coming soon.</p>
@@ -243,6 +261,7 @@
             }
 
             const videoTitle = escapeHtml('AeroLogic lesson video for ' + lesson.title);
+            const infoAlt = escapeHtml(lesson.title + ' visual lesson guide');
 
             slot.innerHTML = `
                 <div class="external-ref-note">
@@ -252,9 +271,13 @@
                 </div>
                 <div class="lesson-video-embed">
                     <video controls preload="metadata" title="${videoTitle}">
-                        <source src="${video.src}" type="video/mp4">
+                        <source src="${media.videoSrc}" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
+                </div>
+                <div class="lesson-info-card">
+                    <p class="lesson-info-label">Additional Info</p>
+                    <img src="${media.infoImage}" alt="${infoAlt}" class="lesson-info-image">
                 </div>`;
         }
 
@@ -358,8 +381,8 @@
             document.getElementById('step-video-title').textContent = lesson.title;
             document.getElementById('checklist-heading').textContent = lesson.title + ' Checklist';
 
-            // Lesson video for this lesson step
-            renderLessonVideo(lesson);
+            // Lesson media for this lesson step
+            renderLessonMedia(lesson);
 
             const checklistEl = document.getElementById('step-checklist');
             checklistEl.innerHTML = lesson.checklist.map(item => `
